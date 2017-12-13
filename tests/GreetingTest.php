@@ -1,6 +1,8 @@
 <?php
     use PHPUnit\Framework\TestCase;
     
+    include '../src/Greeting.php';
+    
     /**
      * @covers Greeting
      */

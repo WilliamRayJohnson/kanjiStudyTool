@@ -10,13 +10,9 @@
 
     <body>
         <?php
-            include 'src/Greeting.php';
+            include 'src/Question.php';
             
-            $greeter = new Greeting(); 
-        
-            echo '<h1>Hello, World</h1>';
-            echo Greeting::sayHello();
-            echo $greeter->sayGreeting('こんにちは!');
+            
         ?>
     </body>
 </html>
