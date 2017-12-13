@@ -9,7 +9,10 @@
 
     <body>
         <?php
+            include 'src/Greeting.php';
+        
             echo '<h1>Hello, World</h1>';
+            echo Greeting::sayHello();
         ?>
     </body>
 </html>
