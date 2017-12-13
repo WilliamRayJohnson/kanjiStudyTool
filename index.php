@@ -26,7 +26,7 @@
         <?php
             include 'src/Question.php';
             
-            $aQuestion = new Question("Test", array("test"));
+            $aQuestion = new Question("Test", array("answer one", "answer two"));
             echo $aQuestion->getFormattedQuestion();
         ?>
     </body>
