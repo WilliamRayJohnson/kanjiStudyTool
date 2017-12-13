@@ -5,7 +5,7 @@
         }
         
         function sayGreeting($phrase) {
-            return '<p>' + $phrase + '</p>';
+            return('<p>' . $phrase . '</p>');
         }
     }
 ?>
