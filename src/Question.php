@@ -10,7 +10,7 @@
         
         function getFormattedQuestion() {
             $formattedQuestion =
-            "<h2>" . $this->question . "</h2>\n" .
+            "<h2 align=\"left\">" . $this->question . "</h2>\n" .
             "<ol id=\"selectable\">\n";
             foreach($this->answers as $answer) {
                 $formattedQuestion .= 

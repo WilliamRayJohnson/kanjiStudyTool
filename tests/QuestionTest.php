@@ -7,7 +7,7 @@
     class QuestionTest extends TestCase {
         public function testGetFormattedQuestion() : void {
             $expectedQuestion =
-            "<h2>test</h2>\n" .
+            "<h2 align=\"left\">test</h2>\n" .
             "<ol id=\"selectable\">\n" .
             "    <li class=\"ui-widget-content\">test</li>\n" .
             "</ol>";
