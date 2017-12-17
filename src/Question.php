@@ -9,17 +9,15 @@
         }
         
         function getFormattedQuestion() {
-            $formattedQuestion = 
-            "<div>\n" .
-            "    <h2>" . $this->question . "</h2>\n" .
-            "    <ol id=\"selectable\">\n";
+            $formattedQuestion =
+            "<h2>" . $this->question . "</h2>\n" .
+            "<ol id=\"selectable\">\n";
             foreach($this->answers as $answer) {
                 $formattedQuestion .= 
-            "        <li class=\"ui-widget-content\">" . $answer . "</li>\n";
+            "    <li class=\"ui-widget-content\">" . $answer . "</li>\n";
             }
             $formattedQuestion .= 
-            "    </ol>\n" .
-            "</div>";
+            "</ol>";
             
             return($formattedQuestion);
         }

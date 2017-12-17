@@ -23,11 +23,13 @@
     </head>
 
     <body>
+        <div align="center">
         <?php
             include 'src/Question.php';
             
             $aQuestion = new Question("Test", array("answer one", "answer two"));
             echo $aQuestion->getFormattedQuestion();
         ?>
+        </div>
     </body>
 </html>
