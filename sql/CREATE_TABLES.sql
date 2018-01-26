@@ -7,6 +7,8 @@ CREATE TABLE kanji_source (
 CREATE TABLE kanji (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     kanji VARCHAR(1) UNIQUE KEY,
+    source_id INT,
+    INDEX (source_id),
     FOREIGN KEY (source_id)
         REFERENCES kanji_source(id)
         ON UPDATE CASCADE ON DELETE RESTRICT);
@@ -18,6 +20,10 @@ CREATE TABLE word (
 
 CREATE TABLE kanji_in_word (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    word_id INT,
+    kanji_id INT,
+    INDEX (word_id),
+    INDEX (kanji_id),
     FOREIGN KEY (word_id)
         REFERENCES word(id)
         ON UPDATE CASCADE ON DELETE CASCADE,
@@ -33,6 +39,10 @@ CREATE TABLE student (
 
 CREATE TABLE student_kanji (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    student_id INT,
+    kanji_id INT,
+    INDEX (student_id),
+    INDEX (kanji_id),
     FOREIGN KEY (student_id)
         REFERENCES student(id)
         ON UPDATE CASCADE ON DELETE CASCADE,
