@@ -19,8 +19,9 @@
         <div align="center">
         <?php
             include 'src/DBAccessor.php';
+            $dbInfo = include('config/config.php');
             
-            $accessor = new DBAccessor();
+            $accessor = new DBAccessor($dbInfo);
             
             $accessor->displayAllKanji();
         ?>

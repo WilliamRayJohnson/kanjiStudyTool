@@ -5,8 +5,8 @@
     class DBAccessor {
         var $dbInfo;
         
-        function __construct() {
-            $this->dbInfo = include('../config/config.php');
+        function __construct($dbInfo) {
+            $this->dbInfo = $dbInfo;
         }
         
         function displayAllKanji() {
