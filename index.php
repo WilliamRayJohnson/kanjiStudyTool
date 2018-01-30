@@ -18,27 +18,11 @@
     <body>
         <div align="center">
         <?php
-            $dbInfo = include('config/config.php');
-            $db = mysqli_connect($dbInfo['DB_SERVER'], $dbInfo['DB_USERNAME'], $dbInfo['DB_PASSWORD'], $dbInfo['DB_DATABASE']);
-            mysqli_set_charset($db, "utf8");
+            include 'src/DBAccessor.php';
             
-            if (!$db) {
-                die("Connection failed: " . mysqli_connect_error());
-            }
+            $accessor = new DBAccessor();
             
-            $sql = "SELECT * FROM kanji";
-            $result = mysqli_query($db, $sql);
-            
-            if (mysqli_num_rows($result) > 0) {
-                while($row = mysqli_fetch_assoc($result)) {
-                    echo "<p>" . $row["kanji"] . "</p>";
-                }
-            }
-            else {
-                echo "0 results";
-            }
-            
-            mysqli_close($db);
+            $accessor->displayAllKanji();
         ?>
         </div>
     </body>
