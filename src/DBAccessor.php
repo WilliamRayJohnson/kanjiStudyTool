@@ -17,9 +17,10 @@
                 die("Connection failed: " . mysqli_connect_error());
             }
             
-            $sql = "SELECT * FROM kanji";
-            $result = mysqli_query($db, $sql);
+            $file = fopen('sql/GET_ALL_KANJI.sql', "r+");
+            $sql = fread($file, filesize($file));
             
+            $result = mysqli_query($db, $sql);
             if (mysqli_num_rows($result) > 0) {
                 while($row = mysqli_fetch_assoc($result)) {
                     echo "<p>" . $row["kanji"] . "</p>";
