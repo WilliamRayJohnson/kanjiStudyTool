@@ -31,5 +31,7 @@
             
             mysqli_close($db);
         }
+        
+        
     }
 ?>

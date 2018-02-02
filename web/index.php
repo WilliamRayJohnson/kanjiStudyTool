@@ -18,8 +18,8 @@
     <body>
         <div align="center">
         <?php
-            include 'src/DBAccessor.php';
-            $dbInfo = include('config/config.php');
+            include '../src/DBAccessor.php';
+            $dbInfo = include('../config/config.php');
             
             $accessor = new DBAccessor($dbInfo);
             

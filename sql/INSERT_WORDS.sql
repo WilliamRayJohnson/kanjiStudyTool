@@ -14,3 +14,6 @@ INSERT INTO `word` (`id`, `word`, `reading`)
     
 INSERT INTO `word` (`id`, `word`, `reading`)
     VALUE (NULL, "五", "ご");
+    
+INSERT INTO `word` (`id`, `word`, `reading`)
+    VALUE (NULL, "一人", "ひとり");
