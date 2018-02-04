@@ -57,5 +57,56 @@
             
             return $wordsAndReadings;
         }
+        
+        /*
+            Adds a word and its reading to the DB.
+        */
+        function addWord($word, $reading) {
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+            
+            if (!$db) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+            
+            $sql = "CALL add_word(" . $word . "," . $reading . ")";
+            mysqli_query($db, $sql);
+
+            mysqli_close($db);
+        }
+        
+        /*
+            Adds a kanji to the DB.
+        */
+        function addKanji($kanji, $source_id) {
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+            
+            if (!$db) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+            
+            $sql = "CALL add_kanji(" . $kanji . "," . $source_id . ")";
+            mysqli_query($db, $sql);
+
+            mysqli_close($db);
+        }
+        
+        /*
+            Adds a source to the DB.
+        */
+        function addSource($source_name) {
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+            
+            if (!$db) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+            
+            $sql = "CALL add_source(" . $source_name . ")";
+            mysqli_query($db, $sql);
+
+            mysqli_close($db);
+        }
     }
 ?>
