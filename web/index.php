@@ -23,7 +23,11 @@
             
             $accessor = new DBAccessor($dbInfo);
             
-            $accessor->displayAllKanji();
+            $words = $accessor->getWordsWithKanji(1);
+            
+            foreach($words as $word) {
+                echo $word[0], $word[1], '<br>';
+            }
         ?>
         </div>
     </body>
