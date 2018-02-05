@@ -108,5 +108,96 @@
 
             mysqli_close($db);
         }
+        
+        /*
+            Links a word and kanji together
+        */
+        function linkWordAndKanji($wordID, $kanjiID) {
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+            
+            if (!$db) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+            
+            $sql = "CALL link_kanji_and_word(" . $kanjiID . "," . $wordID . ")";
+            mysqli_query($db, $sql);
+
+            mysqli_close($db);
+        }
+        
+        /*
+            Checks to see if kanji is in the DB.
+        */
+        function hasKanji($theKanji) {
+            $kanjiExist = false;
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+            
+            if (!$db) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+            
+            $sql = "SELECT id FROM kanji WHERE kanji=" . $theKanji;
+            $result = mysqli_query($db, $sql);
+            
+            if (mysqli_num_rows($result) > 0) {
+                $kanjiExist = true;
+            }
+            
+            mysqli_close($db);
+            
+            return $kanjiExist;
+        }
+        
+        /*
+            Gets the id of a given kanji
+        */
+        function getKanjiID($theKanji) {
+            $kanjiID;
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+            
+            if (!$db) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+            
+            $sql = "SELECT id FROM kanji WHERE kanji=" . $theKanji;
+            $result = mysqli_query($db, $sql);
+            
+            if (mysqli_num_rows($result) > 0) {
+                $row = mysqli_fetch_assoc($result);
+                $kanjiID = $row["id"];
+            }
+            
+            mysqli_close($db);
+            
+            return $kanjiID;
+        }
+        
+        /*
+            Gets the id of a given word
+        */
+        function getWordID($theWord) {
+            $wordID;
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+            
+            if (!$db) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+            
+            $sql = "SELECT id FROM word WHERE word=" . $theWord;
+            $result = mysqli_query($db, $sql);
+            
+            if (mysqli_num_rows($result) > 0) {
+                $row = mysqli_fetch_assoc($result);
+                $wordID = $row["id"];
+            }
+            
+            mysqli_close($db);
+            
+            return $wordID;
+        }
     }
 ?>
