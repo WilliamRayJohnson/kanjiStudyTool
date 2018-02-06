@@ -149,6 +149,15 @@
             
             return $kanjiExist;
         }
+
+        /*
+            Get the id and names of all sources
+         */
+        function getSourceInfo() {
+            $sourceInfo = array();
+
+            return $sourceInfo;
+        }
         
         /*
             Gets the id of a given kanji
