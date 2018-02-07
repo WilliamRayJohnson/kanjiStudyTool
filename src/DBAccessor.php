@@ -69,7 +69,7 @@
                 die("Connection failed: " . mysqli_connect_error());
             }
             
-            $sql = "CALL add_word(" . $word . "," . $reading . ")";
+            $sql = "CALL add_word(\"" . $word . "\",\"" . $reading . "\")";
             mysqli_query($db, $sql);
 
             mysqli_close($db);
@@ -86,7 +86,7 @@
                 die("Connection failed: " . mysqli_connect_error());
             }
             
-            $sql = "CALL add_kanji(" . $kanji . "," . $source_id . ")";
+            $sql = "CALL add_kanji(\"" . $kanji . "\"," . $source_id . ")";
             mysqli_query($db, $sql);
 
             mysqli_close($db);
@@ -103,7 +103,7 @@
                 die("Connection failed: " . mysqli_connect_error());
             }
             
-            $sql = "CALL add_source(" . $source_name . ")";
+            $sql = "CALL add_source(\"" . $source_name . "\")";
             mysqli_query($db, $sql);
 
             mysqli_close($db);
@@ -138,7 +138,7 @@
                 die("Connection failed: " . mysqli_connect_error());
             }
             
-            $sql = "SELECT id FROM kanji WHERE kanji=" . $theKanji;
+            $sql = "SELECT id FROM kanji WHERE kanji=\"" . $theKanji . "\"";
             $result = mysqli_query($db, $sql);
             
             if (mysqli_num_rows($result) > 0) {
@@ -187,7 +187,7 @@
                 die("Connection failed: " . mysqli_connect_error());
             }
             
-            $sql = "SELECT id FROM kanji WHERE kanji=" . $theKanji;
+            $sql = "SELECT id FROM kanji WHERE kanji=\"" . $theKanji . "\"";
             $result = mysqli_query($db, $sql);
             
             if (mysqli_num_rows($result) > 0) {
@@ -197,7 +197,7 @@
             
             mysqli_close($db);
             
-            return $kanjiID;
+            return (int)$kanjiID;
         }
         
         /*
@@ -212,7 +212,7 @@
                 die("Connection failed: " . mysqli_connect_error());
             }
             
-            $sql = "SELECT id FROM word WHERE word=" . $theWord;
+            $sql = "SELECT id FROM word WHERE word=\"" . $theWord . "\"";
             $result = mysqli_query($db, $sql);
             
             if (mysqli_num_rows($result) > 0) {
@@ -222,7 +222,7 @@
             
             mysqli_close($db);
             
-            return $wordID;
+            return (int)$wordID;
         }
     }
 ?>

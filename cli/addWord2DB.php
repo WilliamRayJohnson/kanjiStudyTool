@@ -29,7 +29,7 @@
                 printf("%s: %s\n", $source[0], $source[1]);
             }
             $sourceID = readline();
-            $accessor->addKanji($kanji, $sourceID);
+            $accessor->addKanji($kanji, (int)$sourceID);
         }
         $wordID = $accessor->getWordID($wordToAdd[0]);
         $kanjiID = $accessor->getKanjiId($kanji);
