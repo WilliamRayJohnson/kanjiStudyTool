@@ -20,7 +20,7 @@
     exec($readUnicode, $readingForWord);
     $accessor->addWord($wordToAdd[0], $readingForWord[0]);
     
-    for( $kan = 0; $kan <= mb_strlen($wordToAdd[0]); $kan++) {
+    for( $kan = 0; $kan < mb_strlen($wordToAdd[0]); $kan++) {
         $kanji = mb_substr($wordToAdd[0], $kan, 1);
         if (!$accessor->hasKanji($kanji)) {
             printf("%s is not in the database. Please provide a source ID.\n", $kanji);
