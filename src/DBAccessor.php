@@ -155,7 +155,23 @@
          */
         function getSourceInfo() {
             $sourceInfo = array();
-
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+            
+            if (!$db) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+            
+            $sql = "SELECT * FROM kanji_source";
+            $result = mysqli_query($db, $sql);
+            
+            if (mysqli_num_rows($result) > 0) {
+                while($row = mysqli_fetch_assoc($result)) {
+                    $sourceInfo[] = array($row["id"], $row["source"]);
+                }
+            }
+            
+            mysqli_close($db);
             return $sourceInfo;
         }
         
