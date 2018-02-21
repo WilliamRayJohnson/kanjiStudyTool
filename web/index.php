@@ -19,15 +19,14 @@
         <div align="center">
         <?php
             include '../src/DBAccessor.php';
+            include '../src/Question.php';
             $dbInfo = include('../config/config.php');
             
-            $accessor = new DBAccessor($dbInfo);
+            $question = new Question("Testing getting a response", array("一", "二"));
             
-            $words = $accessor->getWordsWithKanji(1);
-            
-            foreach($words as $word) {
-                echo $word[0], $word[1], '<br>';
-            }
+            echo "<div class=question-block>";
+            echo $question->getFormattedQuestion();
+            echo "</div>";
         ?>
         </div>
     </body>
