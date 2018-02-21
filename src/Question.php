@@ -2,6 +2,8 @@
     class Question {
         var $question;
         var $answers;
+        var $resposne;
+        var $hasAnswer;
         
         function __construct($question, $answers) {
             $this->question = $question;
@@ -20,6 +22,15 @@
             "</ol>";
             
             return($formattedQuestion);
+        }
+        
+        function answerQuestion($response) {
+            $this->response = $response;
+            $this->hasAnswer = true;
+        }
+        
+        function hasResponse() {
+            return($this->hasAnswer);
         }
     }
 ?>

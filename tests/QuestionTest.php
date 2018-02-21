@@ -15,5 +15,11 @@
             $actualQuestion = $testQuestion->getFormattedQuestion();
             $this->assertEquals($expectedQuestion, $actualQuestion);
         }
+        
+        public function testHasResponse() : void {
+            $testQuestion = new Question("test", array("test"));
+            $testQuestion->answerQuestion("answer");
+            $this->assertTrue($testQuestion->hasResponse());
+        }
     }  
 ?>
