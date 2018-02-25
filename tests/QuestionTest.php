@@ -7,10 +7,10 @@
     class QuestionTest extends TestCase {
         public function testGetFormattedQuestion() : void {
             $expectedQuestion =
-            "<h2 align=\"left\">test</h2>\n" .
-            "<ol id=\"selectable\">\n" .
-            "    <li class=\"ui-widget-content\">test</li>\n" .
-            "</ol>";
+            "<form>\n" .
+            "test<br>\n" .
+            "    <input type=\"radio\" name=\"qOption\" value=\"test\">test<br>\n" .
+            "</form>\n";
             $testQuestion = new Question("test", array("test"));
             $actualQuestion = $testQuestion->getFormattedQuestion();
             $this->assertEquals($expectedQuestion, $actualQuestion);

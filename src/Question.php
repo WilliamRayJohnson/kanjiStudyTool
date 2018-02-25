@@ -12,14 +12,14 @@
         
         function getFormattedQuestion() {
             $formattedQuestion =
-            "<h2 align=\"left\">" . $this->question . "</h2>\n" .
-            "<ol id=\"selectable\">\n";
+            "<form>\n" .
+            $this->question . "<br>\n";
             foreach($this->answers as $answer) {
                 $formattedQuestion .= 
-            "    <li class=\"ui-widget-content\">" . $answer . "</li>\n";
+            "    <input type=\"radio\" name=\"qOption\" value=\"" . $answer . "\">" . $answer . "<br>\n";
             }
             $formattedQuestion .= 
-            "</ol>";
+            "</form>\n";
             
             return($formattedQuestion);
         }
