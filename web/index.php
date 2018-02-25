@@ -9,8 +9,8 @@
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script type="text/javascript">
-        function submitResponse() {
-            alert("You chose: " + $('input[name=qOption]:checked').val());
+        function submitResponse(questionId) {
+            alert("You chose: " + $('input[name=q' + questionId + 'Option]:checked').val());
             return false;
         }
         </script>
@@ -23,7 +23,7 @@
             include '../src/Question.php';
             $dbInfo = include('../config/config.php');
             
-            $question = new Question("Testing getting a response", array("一", "二"));
+            $question = new Question(1, "Testing getting a response", array("一", "二"), "一");
             
             echo "<div class=question-block>";
             echo $question->getFormattedQuestion();
