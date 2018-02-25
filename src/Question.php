@@ -12,13 +12,14 @@
         
         function getFormattedQuestion() {
             $formattedQuestion =
-            "<form>\n" .
+            "<form name=\"question\" onSubmit=\"return submitResponse()\">\n" .
             $this->question . "<br>\n";
             foreach($this->answers as $answer) {
                 $formattedQuestion .= 
             "    <input type=\"radio\" name=\"qOption\" value=\"" . $answer . "\">" . $answer . "<br>\n";
             }
             $formattedQuestion .= 
+            "    <input type=\"submit\" name=\"submit\" value=\"Submit\">\n" .
             "</form>\n";
             
             return($formattedQuestion);
