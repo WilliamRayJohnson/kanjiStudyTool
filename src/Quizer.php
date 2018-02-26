@@ -35,5 +35,15 @@
         function getCurrentQuestion() {
             return($this->questions[$this->currentQuestionIndex]);
         }
+        
+        function answerCurrentQuestion($answer) {
+            $this->questions[$this->currentQuestionIndex]->answerQuestion($answer);
+            if($this->currentQuestionIndex == (count($this->questions) - 1)) {
+                $this->currentQuestionIndex = 0;
+            }
+            else {
+                $this->currentQuestionIndex++;
+            }
+        }
     }
 ?>
