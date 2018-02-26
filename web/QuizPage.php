@@ -1,6 +1,6 @@
 <?php
-include 'Question.php';
-include 'Quizer.php';
+include '../src/Question.php';
+include '../src/Quizer.php';
 
 
 print <<<TOP
@@ -9,7 +9,7 @@ print <<<TOP
         <title>Quiz</title>
         <meta charset="utf-8" />
         
-        <link rel="stylesheet" type="text/css" href="../web/index.css" />
+        <link rel="stylesheet" type="text/css" href="index.css" />
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script type="text/javascript">
@@ -28,9 +28,10 @@ TOP;
         $quiz->addQuestion("Question 2:", array("三", "四"), "四");
         
         foreach($quiz->questions as $question) {
-        print <<<QDIV
+            $formattedQuestion = $question->getFormattedQuestion();
+            print <<<QDIV
             <div class=question-block>
-            $question->getFormattedQuestion()
+            $formattedQuestion
             </div>
 QDIV;
         }
