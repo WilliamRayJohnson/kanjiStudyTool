@@ -25,6 +25,12 @@
             $this->assertEquals(1, $testQuestion->responseAttempts);
         }
         
+        public function testAnswerQuestionCorrectly() : void {
+            $testQuestion = new Question(1, "test", array("test"), "test");
+            $testQuestion->answerQuestion("test");
+            $this->assertTrue($testQuestion->hasCorrectAnswer());
+        }
+        
         public function testConstructQuestion() : void {
             $testQuestion = new Question(1, "test", array("一", "二"), "一");
             $this->assertEquals(1, $testQuestion->questionId);

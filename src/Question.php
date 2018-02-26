@@ -38,10 +38,10 @@
             $this->response = $response;
             $this->isAnswered = true;
             if($response == $this->correctResponse) {
-                $isAnsweredCorrectly = true;
+                $this->isAnsweredCorrectly = true;
             }
             else {
-                $isAnsweredCorrectly = false;
+                $this->isAnsweredCorrectly = false;
             }
             $this->responseAttempts++;
         }
