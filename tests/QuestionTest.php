@@ -30,6 +30,23 @@
             $testQuestion->answerQuestion("test");
             $this->assertTrue($testQuestion->hasCorrectAnswer());
         }
+
+        public function testAnswerQuestionIncorrectly() : void {
+            $testQuestion = new Question(1, "test", array("test"), "test");
+            $testQuestion->answerQuestion("incorrect");
+            $this->assertFalse($testQuestion->hasCorrectAnswer());
+            $this->assertTrue($testQustion->needsRepeatResponse());
+        }
+
+        public function testAnsQIncorrectThenCorrect() : void {
+            $testQuestion = new Question(1, "test", array("test"), "test");
+            $testQuestion->answerQuestion("incorrect");
+            $this->assertTrue($testQuestion->needsRepeatResponse());
+            $testQuestion->answerQuestion("test");
+            $this->assertFalse($testQuestion->needsRepeatResponse());
+            $this->assertTrue($testQuestion->hasCorrectAnswer());
+            $this->assertEquals(2, $testQuestion->responseAttempts);
+        }
         
         public function testConstructQuestion() : void {
             $testQuestion = new Question(1, "test", array("一", "二"), "一");
