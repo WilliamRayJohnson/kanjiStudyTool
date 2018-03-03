@@ -48,6 +48,28 @@
             $this->assertEquals(2, $testQuestion->responseAttempts());
         }
         
+        public function testAnsQAfterQuestionIsComplete() {
+            $testQuestion = new Question(1, "test", array("test"), "test");
+            $testQuestion->answerQuestion("test");
+            $testQuestion->answerQuestion("test");
+            $testQuestion->answerQuestion("test");
+            $testQuestion->answerQuestion("incorrect");
+            $this->assertTrue($testQuestion->hasCorrectAnswer());
+            $this->assertEquals(1, $testQuestion->responseAttempts());
+        }
+        
+        public function testAnsQAfterQuestionIsCompleteWIncorrectAns() {
+            $testQuestion = new Question(1, "test", array("test"), "test");
+            $testQuestion->answerQuestion("incorrect");
+            $testQuestion->answerQuestion("test");
+            $testQuestion->answerQuestion("test");
+            $testQuestion->answerQuestion("test");
+            $testQuestion->answerQuestion("incorrect");
+            $this->assertTrue($testQuestion->hasCorrectAnswer());
+            $this->assertFalse($testQuestion->needsRepeatResponse());
+            $this->assertEquals(3, $testQuestion->responseAttempts());
+        }
+        
         public function testCompleteAnsQIncorrWorkflow() {
             $testQuestion = new Question(1, "test", array("test"), "test");
             $testQuestion->answerQuestion("incorrect");

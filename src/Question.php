@@ -42,6 +42,8 @@
             $this->response = $response;
             $this->isAnswered = true;
             if($response == $this->correctResponse) {
+                if($this->correctResponses >= 1 && $this->repeatResponseNeeded)
+                    $this->repeatResponseNeeded = false;
                 $this->isAnsweredCorrectly = true;
                 $this->correctResponses++;
             }
