@@ -7,7 +7,9 @@
         var $correctResponse;
         var $isAnswered;
         var $isAnsweredCorrectly;
-        var $responseAttempts;
+        var $repeatResponseNeeded;
+        var $correctResponses;
+        var $incorrectResponses;
         
         function __construct($questionId, $question, $answers, $correctResponse) {
             $this->questionId = $questionId;
@@ -16,7 +18,9 @@
             $this->correctResponse = $correctResponse;
             $this->isAnswered = false;
             $this->isAnsweredCorrectly = false;
-            $this->responseAttempts = 0;
+            $this->repeatResponseNeeded = false;
+            $this->correctResponses = 0;
+            $this->incorrectResponses = 0;
         }
         
         function getFormattedQuestion() {
@@ -39,11 +43,13 @@
             $this->isAnswered = true;
             if($response == $this->correctResponse) {
                 $this->isAnsweredCorrectly = true;
+                $this->correctResponses++;
             }
             else {
                 $this->isAnsweredCorrectly = false;
+                $this->repeatResponseNeeded = true;
+                $this->incorrectResponses++;
             }
-            $this->responseAttempts++;
         }
         
         function hasResponse() {
@@ -52,6 +58,14 @@
         
         function hasCorrectAnswer() {
             return($this->isAnsweredCorrectly);
+        }
+
+        function needsRepeatResponse() {
+            return($this->repeatResponseNeeded);
+        }
+
+        function responseAttempts() {
+            return($this->correctResponses + $this->incorrectResponses);
         }
     }
 ?>
