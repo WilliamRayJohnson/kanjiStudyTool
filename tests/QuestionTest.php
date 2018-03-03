@@ -22,7 +22,7 @@
             $testQuestion->answerQuestion("answer");
             $this->assertTrue($testQuestion->hasResponse());
             $this->assertFalse($testQuestion->hasCorrectAnswer());
-            $this->assertEquals(1, $testQuestion->responseAttempts);
+            $this->assertEquals(1, $testQuestion->responseAttempts());
         }
         
         public function testAnswerQuestionCorrectly() : void {
@@ -35,7 +35,7 @@
             $testQuestion = new Question(1, "test", array("test"), "test");
             $testQuestion->answerQuestion("incorrect");
             $this->assertFalse($testQuestion->hasCorrectAnswer());
-            $this->assertTrue($testQustion->needsRepeatResponse());
+            $this->assertTrue($testQuestion->needsRepeatResponse());
         }
 
         public function testAnsQIncorrectThenCorrect() : void {
@@ -43,9 +43,19 @@
             $testQuestion->answerQuestion("incorrect");
             $this->assertTrue($testQuestion->needsRepeatResponse());
             $testQuestion->answerQuestion("test");
-            $this->assertFalse($testQuestion->needsRepeatResponse());
+            $this->assertTrue($testQuestion->needsRepeatResponse());
             $this->assertTrue($testQuestion->hasCorrectAnswer());
-            $this->assertEquals(2, $testQuestion->responseAttempts);
+            $this->assertEquals(2, $testQuestion->responseAttempts());
+        }
+        
+        public function testCompleteAnsQIncorrWorkflow() {
+            $testQuestion = new Question(1, "test", array("test"), "test");
+            $testQuestion->answerQuestion("incorrect");
+            $testQuestion->answerQuestion("test");
+            $this->assertTrue($testQuestion->needsRepeatResponse());
+            $this->assertTrue($testQuestion->hasCorrectAnswer());
+            $testQuestion->answerQuestion("test");
+            $this->assertFalse($testQuestion->needsRepeatResponse());
         }
         
         public function testConstructQuestion() : void {
