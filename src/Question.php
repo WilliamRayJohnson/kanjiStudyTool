@@ -39,18 +39,20 @@
         }
         
         function answerQuestion($response) {
-            $this->response = $response;
-            $this->isAnswered = true;
-            if($response == $this->correctResponse) {
-                if($this->correctResponses >= 1 && $this->repeatResponseNeeded)
-                    $this->repeatResponseNeeded = false;
-                $this->isAnsweredCorrectly = true;
-                $this->correctResponses++;
-            }
-            else {
-                $this->isAnsweredCorrectly = false;
-                $this->repeatResponseNeeded = true;
-                $this->incorrectResponses++;
+            if(!$this->isAnsweredCorrectly || $this->repeatResponseNeeded) {
+                $this->response = $response;
+                $this->isAnswered = true;
+                if($response == $this->correctResponse) {
+                    if($this->correctResponses >= 1 && $this->repeatResponseNeeded)
+                        $this->repeatResponseNeeded = false;
+                    $this->isAnsweredCorrectly = true;
+                    $this->correctResponses++;
+                }
+                else {
+                    $this->isAnsweredCorrectly = false;
+                    $this->repeatResponseNeeded = true;
+                    $this->incorrectResponses++;
+                }
             }
         }
         
