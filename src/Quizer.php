@@ -38,11 +38,13 @@
         
         function answerCurrentQuestion($answer) {
             $this->questions[$this->currentQuestionIndex]->answerQuestion($answer);
-            if($this->currentQuestionIndex == (count($this->questions) - 1)) {
-                $this->currentQuestionIndex = 0;
-            }
-            else {
-                $this->currentQuestionIndex++;
+            if($this->questions[$this->currentQuestionIndex]->hasCorrectAnswer()) {
+                if($this->currentQuestionIndex == (count($this->questions) - 1)) {
+                    $this->currentQuestionIndex = 0;
+                }
+                else {
+                    $this->currentQuestionIndex++;
+                }
             }
         }
     }

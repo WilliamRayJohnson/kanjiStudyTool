@@ -20,11 +20,11 @@
             $this->assertFalse($testQuizer->isQuizComplete());
         }
         
-        public function testAnswerCurrentQuestion() : void {
+        public function testAnswerCurrentQuestionCorrectly() : void {
             $testQuizer = new Quizer();
             $testQuizer->addQuestion("test", array("test"), "test");
             $testQuizer->addQuestion("test2", array("test2"), "test2");
-            $testQuizer->answerCurrentQuestion("answer");
+            $testQuizer->answerCurrentQuestion("test");
             $currentQuestion = $testQuizer->getCurrentQuestion();
             $this->assertEquals(1, $currentQuestion->questionId);
         }
@@ -58,7 +58,7 @@
             $this->assertEquals(3, $currentQuestion->questionId);
 
             $testQuizer->answerCurrentQuestion("test4");
-            $currentQuestion = $testQuizer->getCurretnQuestion();
+            $currentQuestion = $testQuizer->getCurrentQuestion();
             $this->assertEquals(0, $currentQuestion->questionId);
             $this->assertFalse($testQuizer->isQuizComplete());
 
