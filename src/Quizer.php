@@ -35,6 +35,16 @@
         }
         
         function getCurrentQuestion() {
+            $indexOnValidQuestion = false;
+            while(!$indexOnValidQuestion) {
+                $currentQ = $this->questions[$this->currentQuestionIndex];
+                if($currentQ->hasCorrectAnswer() && !$currentQ->needsRepeatResponse()) {
+                    $this->currentQuestionIndex++;
+                }
+                else {
+                    $indexOnValidQuestion = true;
+                }
+            }
             return($this->questions[$this->currentQuestionIndex]);
         }
         
