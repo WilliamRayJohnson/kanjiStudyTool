@@ -18,7 +18,9 @@
             $currentQ = 0;
             if($qCount > 0) {
                 while($quizComplete and $currentQ < $qCount) {
-                    $quizComplete = $this->questions[$currentQ]->hasCorrectAnswer();
+                    $correctAnswer = $this->questions[$currentQ]->hasCorrectAnswer();
+                    $noRepeatResponse = !$this->questions[$currentQ]->needsRepeatResponse();
+                    $quizComplete = $correctAnswer && $noRepeatResponse;
                     $currentQ++;
                 }
             }
