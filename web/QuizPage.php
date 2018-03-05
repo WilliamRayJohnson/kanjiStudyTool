@@ -38,7 +38,8 @@ print <<<TOP
             $.post("QuizPage.php",
             {answer: $('input[name=q' + questionId + 'Option]:checked').val()},
                 function(data){
-                    $('html').html(data);
+                    document.write(data);
+                    document.close();
                 });
             return false;
         }
@@ -61,6 +62,7 @@ QDIV;
         }
         else{
             echo "Quiz is finished <br/>";
+            echo "<a href=\"index.php\">Return to home</a><br>";
             session_unset();
             session_destroy();
         }
