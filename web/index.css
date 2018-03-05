@@ -6,7 +6,8 @@ body
 }
 
 .content {
-    align-self: center;
+    padding-left: 5%;
+    margin: auto;
 }
 
 .question-block {
