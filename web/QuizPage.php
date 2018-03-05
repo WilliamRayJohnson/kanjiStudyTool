@@ -5,7 +5,7 @@ include '../src/Quizer.php';
 session_start();
 
 if(isset($_SESSION["isQuizing"])) {
-    if(isset($_POST["answer"]) {
+    if(isset($_POST["answer"])) {
         $_SESSION["quiz"]->answerCurrentQuestion($_POST["answer"]);
         if($_SESSION["quiz"]->isQuizComplete())
             $_SESSION["isQuizing"] = false;
@@ -47,7 +47,13 @@ TOP;
     
         if($_SESSION["isQuizing"]){
             $currentQuestion = $_SESSION['quiz']->getCurrentQuestion();
-            $currentQuestion->getFormattedQuestion();
+            $formattedQuestion = $currentQuestion->getFormattedQuestion();
+            print <<<QDIV
+            <div class=question-block>
+            $formattedQuestion
+            </div>
+QDIV;
+
         }
         else{
             echo "Quiz is finished <br/>";
