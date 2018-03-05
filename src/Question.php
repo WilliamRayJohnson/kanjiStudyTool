@@ -25,15 +25,17 @@
         
         function getFormattedQuestion() {
             $formattedQuestion =
-            "<form name=\"question\" onSubmit=\"return submitResponse(" . $this->questionId . ")\">\n" .
-            $this->question . "<br>\n";
+            "<h2 class=quiz-question>" . $this->question . "</h2>" .
+            "<div class=quiz-answers>\n";
+            "    <form name=\"question\" onSubmit=\"return submitResponse(" . $this->questionId . ")\">\n";
             foreach($this->answers as $answer) {
                 $formattedQuestion .= 
-            "    <input type=\"radio\" name=\"q" . $this->questionId . "Option\" value=\"" . $answer . "\">" . $answer . "<br>\n";
+            "        <input type=\"radio\" name=\"q" . $this->questionId . "Option\" value=\"" . $answer . "\">" . $answer . "<br>\n";
             }
             $formattedQuestion .= 
-            "    <input type=\"submit\" name=\"q" . $this->questionId . "submit\" value=\"Submit\">\n" .
-            "</form>\n";
+            "        <input type=\"submit\" name=\"q" . $this->questionId . "submit\" value=\"Submit\">\n" .
+            "    </form>\n" .
+            "</div>\n";
             
             return($formattedQuestion);
         }

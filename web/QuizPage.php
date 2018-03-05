@@ -46,7 +46,7 @@ print <<<TOP
     </head>
     
     <body>
-        <div align="center">
+        <div class=content>
 TOP;
     
         if($_SESSION["isQuizing"]){

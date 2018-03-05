@@ -7,11 +7,13 @@
     class QuestionTest extends TestCase {
         public function testGetFormattedQuestion() : void {
             $expectedQuestion =
-            "<form name=\"question\" onSubmit=\"return submitResponse(1)\">\n" .
-            "test<br>\n" .
-            "    <input type=\"radio\" name=\"q1Option\" value=\"test\">test<br>\n" .
-            "    <input type=\"submit\" name=\"q1submit\" value=\"Submit\">\n" .
-            "</form>\n";
+            "<h2 class=quiz-question>test</h2>\n" .
+            "<div class=quiz-answers>\n" .
+            "   <form name=\"question\" onSubmit=\"return submitResponse(1)\">\n" .
+            "       <input type=\"radio\" name=\"q1Option\" value=\"test\">test<br>\n" .
+            "       <input type=\"submit\" name=\"q1submit\" value=\"Submit\">\n" .
+            "   </form>\n" .
+            "</div>\n";
             $testQuestion = new Question(1, "test", array("test"), "test");
             $actualQuestion = $testQuestion->getFormattedQuestion();
             $this->assertEquals($expectedQuestion, $actualQuestion);

@@ -5,43 +5,26 @@ body
     margin-right: auto;
 }
 
-#feedback 
-{ 
-    font-size: 1.4em; 
-}
-
-#selectable .ui-selecting 
-{ 
-    background: #FECA40; 
-}
-
-#selectable .ui-selected 
-{ 
-    background: #F39814; 
-    color: white; 
-}
-
-#selectable 
-{ 
-    list-style-type: none; 
-    margin: 0; 
-    padding: 0; 
-    width: 60%; 
-}
-
-#selectable li 
-{ 
-    margin: 3px; 
-    padding: 0.4em; 
-    font-size: 1.4em; 
-    height: 18px; 
+.content {
+    align-self: center;
 }
 
 .question-block {
     display: inline-block;
     width: 45%;
-    height: 100%;
+    height: 45%;
     margin: 10px;
+    align-self: flex-start;
     border: 3px solid black;
-    padding: 10px
+    background-color: gray;
+    padding: 10px;
+}
+
+.quiz-question {
+    
+}
+
+.quiz-answers {
+    padding-left: 20px;
+    align-self: flex-start;
 }
