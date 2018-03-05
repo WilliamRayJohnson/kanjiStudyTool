@@ -35,7 +35,11 @@ print <<<TOP
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script type="text/javascript">
         function submitResponse(questionId) {
-            alert("You chose: " + $('input[name=q' + questionId + 'Option]:checked').val());
+            $.post("QuizPage.php",
+            {answer: $('input[name=q' + questionId + 'Option]:checked').val()},
+                function(data){
+                    $('html').html(data);
+                });
             return false;
         }
         </script>
