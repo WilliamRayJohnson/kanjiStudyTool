@@ -2,6 +2,27 @@
 include '../src/Question.php';
 include '../src/Quizer.php';
 
+session_start();
+
+if(isset($_SESSION["isQuizing"])) {
+    if(isset($_POST["answer"]) {
+        $_SESSION["quiz"]->answerCurrentQuestion($_POST["answer"]);
+        if($_SESSION["quiz"]->isQuizComplete())
+            $_SESSION["isQuizing"] = false;
+    }
+    else {
+        session_unset();
+        session_destroy();
+    }
+}
+else {
+    $quiz = new Quizer();
+    $quiz->addQuestion("Question 1: 一", array("いち", "に", "さん", "よん"), "いち");
+    $quiz->addQuestion("Question 2: 日本", array("ひとり", "にほん", "にち", "にっぽん"), "にほん");
+    $quiz->addQuestion("Question 3: 今日", array("ひ", "きょう", "あした", "まえ"), "きょう");
+    $_SESSION["isQuizing"] = true;
+    $_SESSION["quiz"] = $quiz;
+}
 
 print <<<TOP
 <html>
@@ -23,20 +44,17 @@ print <<<TOP
     <body>
         <div align="center">
 TOP;
-        $quiz = new Quizer();
-        $quiz->addQuestion("Question 1:", array("一", "二"), "一");
-        $quiz->addQuestion("Question 2:", array("三", "四"), "四");
-        
-        foreach($quiz->questions as $question) {
-            $formattedQuestion = $question->getFormattedQuestion();
-            print <<<QDIV
-            <div class=question-block>
-            $formattedQuestion
-            </div>
-QDIV;
+    
+        if($_SESSION["isQuizing"]){
+            $currentQuestion = $_SESSION['quiz']->getCurrentQuestion();
+            $currentQuestion->getFormattedQuestion();
         }
-    
-    
+        else{
+            echo "Quiz is finished <br/>";
+            session_unset();
+            session_destroy();
+        }
+        
 print <<<BOTTOM
         </div>
     </body>
