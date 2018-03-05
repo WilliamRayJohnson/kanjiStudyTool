@@ -13,6 +13,7 @@
     <body>
         <div align="center">
             <a href="QuizPage.php">Sample Quiz</a>
+            <a href="SessionTest.php">Session Test</a>
         </div>
     </body>
 </html>
