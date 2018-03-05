@@ -25,8 +25,8 @@
         
         function getFormattedQuestion() {
             $formattedQuestion =
-            "<h2 class=quiz-question>" . $this->question . "</h2>" .
-            "<div class=quiz-answers>\n";
+            "<h2 class=quiz-question>" . $this->question . "</h2>\n" .
+            "<div class=quiz-answers>\n" .
             "    <form name=\"question\" onSubmit=\"return submitResponse(" . $this->questionId . ")\">\n";
             foreach($this->answers as $answer) {
                 $formattedQuestion .= 
