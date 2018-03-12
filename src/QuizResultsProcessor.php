@@ -11,14 +11,26 @@ class QuizResultsProcessor {
         $pastRatio;
         $newRetentionScore;
         
-        if($pastCR > $pastIR) 
+        if($pastCR > $pastIR) {
+            if($pastIR == 0)
+                $pastIR++;
             $pastRatio = (float)$pastIR/(float)$pastCR;
-        else if($pastIR >= $pastCR)
+        }
+        else if($pastIR >= $pastCR) {
+            if($pastCR == 0)
+                $pastCR++;
             $pastRatio = -(float)$pastCR/(float)$pastIR;
-        if($quizCR > $quizIR) 
+        }
+        if($quizCR > $quizIR) {
+            if($quizIR == 0)
+                $quizIR++;
             $quizRatio = (float)$quizIR/(float)$quizCR;
-        else if($quizIR >= $quizCR)
+        }
+        else if($quizIR >= $quizCR) {
+            if($quizCR == 0)
+                $quizCR++;
             $quizRatio = -(float)$quizCR/(float)$quizIR;
+        }
         
         $newRetentionScore = $originalRetentionScore + (QUIZ_MAX_CHANGE * $quizRatio) + (PAST_MAX_CHANGE * $pastRatio);
         
