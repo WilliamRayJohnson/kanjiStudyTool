@@ -6,7 +6,8 @@ class QuizResultsProcessor {
     const QUIZ_MAX_CHANGE = 0.1;
     const PAST_MAX_CHANGE = 0.02;
     
-    function calcBasicRetentionScore($pastCR, $pastIR, $quizCR, $quizIR, $originalRetentionScore) {
+    public static function calcBasicRetentionScore(
+                    $pastCR, $pastIR, $quizCR, $quizIR, $originalRetentionScore) {
         $quizRatio;
         $pastRatio;
         $newRetentionScore;
