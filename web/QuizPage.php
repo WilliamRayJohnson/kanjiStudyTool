@@ -43,6 +43,10 @@ print <<<TOP
                 });
             return false;
         }
+        function sendQuizResults(results) {
+            $.post("scripts/ProcessQuizResults.php", results);
+            return false;
+        }
         </script>
     </head>
     
@@ -61,8 +65,14 @@ QDIV;
 
         }
         else{
-            echo "Quiz is finished <br/>";
-            echo "<a href=\"index.php\">Return to home</a><br>";
+            $quizResults = $_SESSION["quiz"]->getJSON("William");
+            print <<<SEND_RESULTS
+            <script type="text/javascript">
+            window.onload = sendQuizResults($quizResults);
+            </script>
+            Quiz is finished <br/>
+            <a href=index.php>Return to home</a><br>
+SEND_RESULTS;
             session_unset();
             session_destroy();
         }
