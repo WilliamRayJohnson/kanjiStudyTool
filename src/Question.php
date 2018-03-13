@@ -1,6 +1,7 @@
 <?php
     class Question {
         var $questionId;
+        var $testItem;
         var $question;
         var $answers;
         var $resposne;
@@ -11,11 +12,12 @@
         var $correctResponses;
         var $incorrectResponses;
         
-        function __construct($questionId, $question, $answers, $correctResponse) {
+        function __construct($questionId, $question, $answers, $correctResponse, $testItem) {
             $this->questionId = $questionId;
             $this->question = $question;
             $this->answers = $answers;
             $this->correctResponse = $correctResponse;
+            $this->testItem = $testItem;
             $this->isAnswered = false;
             $this->isAnsweredCorrectly = false;
             $this->repeatResponseNeeded = false;
@@ -56,6 +58,12 @@
                     $this->incorrectResponses++;
                 }
             }
+        }
+        
+        function getJSON() {
+            $JSON = sprintf("{\"kanji\": \"%s\", \"correct\": %d, \"incorrect\": %d}",
+                            $this->testItem, $this->correctResponses, $this->incorrectResponses);
+            return($JSON);
         }
         
         function hasResponse() {

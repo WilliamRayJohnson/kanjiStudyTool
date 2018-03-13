@@ -17,9 +17,9 @@ if(isset($_SESSION["isQuizing"])) {
 }
 else {
     $quiz = new Quizer();
-    $quiz->addQuestion("Question 1: 一", array("いち", "に", "さん", "よん"), "いち");
-    $quiz->addQuestion("Question 2: 日本", array("ひとり", "にほん", "にち", "にっぽん"), "にほん");
-    $quiz->addQuestion("Question 3: 今日", array("ひ", "きょう", "あした", "まえ"), "きょう");
+    $quiz->addQuestion("Question 1: 一", array("いち", "に", "さん", "よん"), "いち", "一");
+    $quiz->addQuestion("Question 2: 日本", array("ひとり", "にほん", "にち", "にっぽん"), "にほん", "日");
+    $quiz->addQuestion("Question 3: 今日", array("ひ", "きょう", "あした", "まえ"), "きょう", "今");
     $_SESSION["isQuizing"] = true;
     $_SESSION["quiz"] = $quiz;
 }

@@ -30,8 +30,8 @@
             return($quizComplete);
         }
         
-        function addQuestion($question, $answers, $correctResponse) {
-            array_push($this->questions, new Question(count($this->questions), $question, $answers, $correctResponse));
+        function addQuestion($question, $answers, $correctResponse, $testItem) {
+            array_push($this->questions, new Question(count($this->questions), $question, $answers, $correctResponse, $testItem));
         }
         
         function getCurrentQuestion() {
@@ -58,6 +58,17 @@
                     $this->currentQuestionIndex++;
                 }
             }
+        }
+        
+        function getJSON($username) {
+            $JSON = sprintf("{\"username\": \"%s\", \"questionCount\": %d, \"questions\": [",
+                            $username, count($this->questions));
+            $JSONQuestions = "";
+            foreach($this->questions as $question)
+                $JSONQuestions = sprintf("%s%s,", $JSONQuestions, $question->getJSON());
+            $JSONQuestions = trim($JSONQuestions, ",");
+            $JSON = sprintf("%s%s]}", $JSON, $JSONQuestions);
+            return($JSON);
         }
     }
 ?>
