@@ -15,9 +15,13 @@ class QuizResultsProcessor {
         if($pastCR > $pastIR) {
             if($pastIR == 0)
                 $pastIR++;
+            if($pastCR == 0)
+                $pastCR++;
             $pastRatio = (float)$pastIR/(float)$pastCR;
         }
         else if($pastIR >= $pastCR) {
+            if($pastIR == 0)
+                $pastIR++;
             if($pastCR == 0)
                 $pastCR++;
             $pastRatio = -(float)$pastCR/(float)$pastIR;
@@ -25,9 +29,13 @@ class QuizResultsProcessor {
         if($quizCR > $quizIR) {
             if($quizIR == 0)
                 $quizIR++;
+            if($quizCR == 0)
+                $quizCR++;
             $quizRatio = (float)$quizIR/(float)$quizCR;
         }
         else if($quizIR >= $quizCR) {
+            if($quizIR == 0)
+                $quizIR++;
             if($quizCR == 0)
                 $quizCR++;
             $quizRatio = -(float)$quizCR/(float)$quizIR;
@@ -40,5 +48,4 @@ class QuizResultsProcessor {
         return $newRetentionScore;
     }
 }
-
 ?>
