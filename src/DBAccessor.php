@@ -224,5 +224,46 @@
             
             return (int)$wordID;
         }
+        
+        /*
+            Get stats on kanji for a particular user
+        */
+        function getKanjiStats($kanji, $user) {
+            $stats = array();
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+            
+            if (!$db)
+                die("Connection failed: " . mysqli_connect_error());
+        
+            $sql = sprintf("CALL GET_KANJI_STATS(\"%s\", \"%s\")", $kanji, $user);
+            $result = mysqli_query($db, $sql);
+            
+            if (mysqli_num_rows($result) > 0) {
+                $row = mysqli_fetch_assoc($result);
+                $stats["score"] = $row["retention_score"];
+                $stats["correct"] = $row["correct_response_count"];
+                $stats["incorrect"] = $row["incorrect_response_count"];
+            }
+            mysqli_close($db);
+            
+            return $stats;
+        }
+        
+        /*
+            Updates stats of particular user's kanji
+        */
+        function updateKanjiStats($kanji, $user, $quizCR, $quizIR, $newRetentionScore) {
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+            
+            if (!$db)
+                die("Connection failed: " . mysqli_connect_error());
+        
+            $sql = sprintf("CALL UPDATE_KANJI_STATS(\"%s\", \"%s\", %d, %d, %f)", 
+                        $kanji, $user, $quizCR, $quizIR, $newRetentionScore);
+            mysqli_query($db, $sql);
+            mysqli_close($db);
+        }
     }
 ?>
