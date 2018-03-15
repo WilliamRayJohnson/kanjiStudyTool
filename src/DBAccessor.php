@@ -265,5 +265,58 @@
             mysqli_query($db, $sql);
             mysqli_close($db);
         }
+        
+        /**
+        * Retrives the kanji and word for N number of questions
+        * to be asked for a user. Results will be N kanji with the lowest
+        * retention scores for that user.
+        */
+        function getQuizQuestions($username, $quizLength) {
+            $quizQuestions = array();
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+
+            if (!$db)
+                die("Connection failed: " . mysqli_connect_error());
+
+            $sql = sprintf("CALL GET_QUIZ_QUESTIONS(\"%s\", %d)", $username, $quizLength);
+            $results = mysqli_query($db, $sql);
+
+            if (mysqli_num_rows($results) > 0) {
+                while($row = mysqli_fetch_assoc($results))
+                    array_push($quizQuestions, $row);
+            }
+            mysqli_close($db);
+
+            return $quizQuestions;
+        }
+
+        /**
+        * Retrieves answers in the form of word for a question involving
+        * a particular kanji while excluding the word the question is asking
+        * about.
+        */
+        function getQuizAnswers($kanji, $word, $answerCount) {
+            $quizAnswers = array("words" => array(), "readings" => array());
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+
+            if (!$db)
+                die("Connection failed: " . mysqli_connect_error());
+
+            $sql = sprintf("CALL GET_QUIZ_ANSWERS(\"%s\", \"%s\", %d)",
+                        $kanji, $word, $answerCount);
+            $results = mysqli_query($db, $sql);
+
+            if (mysqli_num_rows($results) > 0) {
+                while($row = mysqli_fetch_assoc($results)) {
+                    array_push($quizAnswers["words"], $row["word"]);
+                    array_push($quizAnswers["readings"], $row["reading"]);
+                }
+            }
+            mysqli_close($db);
+
+            return $quizAnswers;
+        }
     }
 ?>

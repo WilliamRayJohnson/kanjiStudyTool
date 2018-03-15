@@ -1,6 +1,8 @@
 <?php
 include '../src/Question.php';
 include '../src/Quizer.php';
+include '../src/QuizGenerator.php';
+include '../src/DBAccessor.php';
 
 session_start();
 
@@ -16,10 +18,8 @@ if(isset($_SESSION["isQuizing"])) {
     }
 }
 else {
-    $quiz = new Quizer();
-    $quiz->addQuestion("Question 1: 一", array("いち", "に", "さん", "よん"), "いち", "一");
-    $quiz->addQuestion("Question 2: 日本", array("ひとり", "にほん", "にち", "にっぽん"), "にほん", "日");
-    $quiz->addQuestion("Question 3: 今日", array("ひ", "きょう", "あした", "まえ"), "きょう", "今");
+    $generator = new QuizGenerator();
+    $quiz = $generator->generateQuiz("William", 5);
     $_SESSION["isQuizing"] = true;
     $_SESSION["quiz"] = $quiz;
 }
