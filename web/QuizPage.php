@@ -6,33 +6,30 @@ include '../src/DBAccessor.php';
 
 session_start();
 
-if(isset($_SESSION["isQuizing"])) {
-    if(isset($_POST["answer"])) {
-        $_SESSION["quiz"]->answerCurrentQuestion($_POST["answer"]);
-        if($_SESSION["quiz"]->isQuizComplete())
-            $_SESSION["isQuizing"] = false;
+if(isset($_SESSION["username"])) {
+    if(isset($_SESSION["isQuizing"])) {
+        if(isset($_POST["answer"])) {
+            $_SESSION["quiz"]->answerCurrentQuestion($_POST["answer"]);
+            if($_SESSION["quiz"]->isQuizComplete())
+                $_SESSION["isQuizing"] = false;
+        }
     }
     else {
-        session_unset();
-        session_destroy();
+        $generator = new QuizGenerator();
+        $quiz = $generator->generateQuiz($_SESSION["username"], 5);
+        $_SESSION["isQuizing"] = true;
+        $_SESSION["quiz"] = $quiz;
     }
 }
-else {
-    $generator = new QuizGenerator();
-    $quiz = $generator->generateQuiz("William", 5);
-    $_SESSION["isQuizing"] = true;
-    $_SESSION["quiz"] = $quiz;
-}
+?>
 
-print <<<TOP
 <html>
     <head>
-        <title>Quiz</title>
+        <title>The Kanji Studier: Quiz</title>
         <meta charset="utf-8" />
         
         <link rel="stylesheet" type="text/css" href="index.css" />
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script type="text/javascript">
         function submitResponse(questionId) {
             $.post("QuizPage.php",
@@ -51,35 +48,43 @@ print <<<TOP
     </head>
     
     <body>
-        <div class=content>
-TOP;
-    
-        if($_SESSION["isQuizing"]){
-            $currentQuestion = $_SESSION['quiz']->getCurrentQuestion();
-            $formattedQuestion = $currentQuestion->getFormattedQuestion();
-            print <<<QDIV
-            <div class=question-block>
-            $formattedQuestion
-            </div>
+        <?php include '../src/MenuBar.php'?>
+        
+        <div class="content">
+        
+        <?php
+        if(isset($_SESSION["username"])) {
+            if($_SESSION["isQuizing"]){
+                $currentQuestion = $_SESSION['quiz']->getCurrentQuestion();
+                $formattedQuestion = $currentQuestion->getFormattedQuestion();
+                print <<<QDIV
+                <div class=question-block>
+                $formattedQuestion
+                </div>
 QDIV;
 
-        }
-        else{
-            $quizResults = $_SESSION["quiz"]->getJSON("William");
-            print <<<SEND_RESULTS
-            <script type="text/javascript">
-            window.onload = sendQuizResults($quizResults);
-            </script>
-            Quiz is finished <br/>
-            <a href=index.php>Return to home</a><br>
+            }
+            else if($_SESSION["quiz"]->isQuizComplete()){
+                $quizResults = $_SESSION["quiz"]->getJSON($_SESSION["username"]);
+                unset($_SESSION["quiz"], $_SESSION["isQuizing"]);
+                print <<<SEND_RESULTS
+                <script type="text/javascript">
+                window.onload = sendQuizResults($quizResults);
+                </script>
+                <h2 style="margin: auto">Quiz is finished </h2>
+                <a class="content-button" href=index.php>Return to home</a>
 SEND_RESULTS;
-            session_unset();
-            session_destroy();
+
+            }
         }
+        else {
+            print <<<LOGIN
+            <a class="content-button" href=index.php>Please Login</a>
+LOGIN;
+
+        }
+        ?>
         
-print <<<BOTTOM
         </div>
     </body>
-</html>
-BOTTOM;
-?>    
+</html>  

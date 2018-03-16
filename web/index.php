@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<?php
+session_start();
+$_SESSION["username"] = "William";
+?>
 
 <html>
     <head>
@@ -10,19 +14,10 @@
     </head>
 
     <body>
-        <ul>
-            <li><a class="active" href="index.php">Home</a></li>
-            <li class="dropdown" style="float:right">
-                <a href="javascript:void(0)" class="dropbtn">wrj6844</a>
-                <div class="dropdown-content">
-                    <a href="profile.html">Profile</a>
-                    <a href="#">Logout</a>
-                </div>
-            </li>
-        </ul>
+        <?php include '../src/MenuBar.php'?>
         
         <div class="content">
-            <a class="content-button" href="quiz.html">Take a Quiz</a>
+            <a class="content-button" href="QuizPage.php">Take a Quiz</a>
         </div>
     </body>
 </html>
