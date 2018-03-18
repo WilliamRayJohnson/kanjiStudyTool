@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>The Kanji Studier</title>
+        <meta charset="utf-8" />
+        
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    </head>
+
+    <body>
+        <h1 class="siteHeader">The Kanji Studier</h1>
+    
+        <ul class="menu">
+            <li class="menu"><a href="index.html">Home</a></li>
+            <li class="dropdown" style="float:right">
+                <a href="#" class="dropbtn">wrj6844</a>
+                <div class="dropdown-content">
+                    <a href="profile.html">Profile</a>
+                    <a href="#">Logout</a>
+                </div>
+            </li>
+        </ul>
+        
+        <div class="content">
+            <div class="content-block">
+                <h2 class="content-header">Please choose a kanji source to begin tracking</h2>
+                <form action="index.html">
+                    <label for="source">Source</label>
+                    <br>
+                    <select id="source" name="source" size=4>
+                        <option value="Genki I: Chp. 3">Genki I: Chapter 3</option>
+                        <option value="Genki I: Chp. 4">Genki I: Chapter 4</option>
+                        <option value="Genki I: Chp. 5">Genki I: Chapter 5</option>
+                        <option value="Genki I: Chp. 6">Genki I: Chapter 6</option>
+                    </select>
+                    <br>
+                    <input type="submit" value="Submit" style="width: 100%">
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
