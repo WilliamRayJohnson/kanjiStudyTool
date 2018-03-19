@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>The Kanji Studier</title>
+        <meta charset="utf-8" />
+        
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    </head>
+
+    <body>
+        <h1 class="siteHeader">The Kanji Studier</h1>
+    
+        <ul class="menu">
+            <li class="menu"><a href="index.html">Home</a></li>
+            <li class="dropdown" style="float:right">
+                <a href="#" class="dropbtn">wrj6844</a>
+                <div class="dropdown-content">
+                    <a href="profile.html">Profile</a>
+                    <a href="#">Logout</a>
+                </div>
+            </li>
+        </ul>
+        
+        <div class="content">
+            <h2 class="content-header">Please rate how well you think you know these kanji:</h2>
+            <div class="content-block">
+                <form name="qrating" action="index.html">
+                    <h3>一</h3>
+                    <fieldset>
+                    <input type="radio" name="rating" id="poor" value="0.1">
+                        <label for="poor">Poor</label>
+                    <input type="radio" name="rating" id="fine" value="0.3">
+                        <label for="fine">Fine</label>
+                    <input type="radio" name="rating" id="average" value="0.5">
+                        <label for="average">Average</label>
+                    <input type="radio" name="rating" id="memorized" value="0.7">
+                        <label for="memorized">Memorized</label>
+                    <input type="radio" name="rating" id="known" value="0.9">
+                        <label for="known">Known</label>
+                    </fieldset>
+                    
+                    <h3>二</h3>
+                    <fieldset>
+                    <input type="radio" name="rating2" id="poor" value="0.1">
+                        <label for="poor">Poor</label>
+                    <input type="radio" name="rating2" id="fine" value="0.3">
+                        <label for="fine">Fine</label>
+                    <input type="radio" name="rating2" id="average" value="0.5">
+                        <label for="average">Average</label>
+                    <input type="radio" name="rating2" id="memorized" value="0.7">
+                        <label for="memorized">Memorized</label>
+                    <input type="radio" name="rating2" id="known" value="0.9">
+                        <label for="known">Known</label>
+                    </fieldset>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

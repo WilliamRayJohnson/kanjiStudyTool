@@ -77,6 +77,7 @@ li.dropdown {
 
 .content-block {
     background-color: white;
+    padding: 10px;
 }
 
 .content-button {
@@ -134,6 +135,10 @@ input[type=submit] {
     border: none;
     border-radius: 4px;
     font-size: 1em;
+}
+
+fieldset {
+  overflow: hidden
 }
 
 /* Profile */
