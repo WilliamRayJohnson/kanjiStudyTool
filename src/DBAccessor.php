@@ -270,8 +270,7 @@
             if (mysqli_num_rows($result) > 0) {
                 $row = mysqli_fetch_assoc($result);
                 $stats["score"] = $row["retention_score"];
-                $stats["correct"] = $row["correct_response_count"];
-                $stats["incorrect"] = $row["incorrect_response_count"];
+                $stats["totalQuestions"] = $row["total_questions_asked"];
             }
             mysqli_close($db);
             
@@ -282,19 +281,17 @@
         * Updates stats of particular user's kanji
         * @param string $kanji The kanji the user was quizzed on
         * @param string $user The user who produced the results
-        * @param int $quizCR The number of times the kanji's question was answered correctly
-        * @param int $quizIR The number of times the kanji's question was answered incorrectly
         * @param float $newRetentionScore The newly generated retention score for the kanji of that user
         */
-        function updateKanjiStats($kanji, $user, $quizCR, $quizIR, $newRetentionScore) {
+        function updateKanjiStats($kanji, $user, $newRetentionScore) {
             $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
             mysqli_set_charset($db, "utf8");
             
             if (!$db)
                 die("Connection failed: " . mysqli_connect_error());
         
-            $sql = sprintf("CALL UPDATE_KANJI_STATS(\"%s\", \"%s\", %d, %d, %f)", 
-                        $kanji, $user, $quizCR, $quizIR, $newRetentionScore);
+            $sql = sprintf("CALL UPDATE_KANJI_STATS(\"%s\", \"%s\", %f)", 
+                        $kanji, $user, $newRetentionScore);
             mysqli_query($db, $sql);
             mysqli_close($db);
         }

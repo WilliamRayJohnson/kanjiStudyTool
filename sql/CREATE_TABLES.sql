@@ -50,6 +50,5 @@ CREATE TABLE student_kanji (
         REFERENCES kanji(id)
         ON UPDATE CASCADE ON DELETE CASCADE,
     retention_score FLOAT,
-    correct_response_count INT,
-    incorrect_response_count INT,
+    total_questions_asked INT,
     last_time_quized DATE);

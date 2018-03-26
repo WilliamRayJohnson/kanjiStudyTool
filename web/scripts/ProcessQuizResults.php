@@ -12,10 +12,9 @@ $kanjiStats;
 foreach($_POST["questions"] as $question) {
     $kanjiStats = $accessor->getKanjiStats($question["kanji"], $_POST["username"]);
     $newRetentionScore = QuizResultsProcessor::calcBasicRetentionScore(
-                            $kanjiStats["correct"], $kanjiStats["incorrect"], $question["correct"],
+                            $kanjiStats["totalQuestions"], $question["correct"],
                             $question["incorrect"], $kanjiStats["score"]);
-    $accessor->updateKanjiStats($question["kanji"], $_POST["username"], $question["correct"], 
-                            $question["incorrect"], $newRetentionScore);
+    $accessor->updateKanjiStats($question["kanji"], $_POST["username"], $newRetentionScore);
     syslog(LOG_NOTICE, sprintf("%s's %s retention score updated to %f",
         $_POST["username"], $question["kanji"], $newRetentionScore));
 }
