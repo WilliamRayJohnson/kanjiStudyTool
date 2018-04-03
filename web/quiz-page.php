@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
 include '../src/Question.php';
 include '../src/Quizer.php';
@@ -16,7 +17,7 @@ if(isset($_SESSION["username"])) {
     }
     else {
         $generator = new QuizGenerator();
-        $quiz = $generator->generateQuiz($_SESSION["username"], 5);
+        $quiz = $generator->generateQuiz($_SESSION["username"], $_POST["questionCount"]);
         $_SESSION["isQuizing"] = true;
         $_SESSION["quiz"] = $quiz;
     }
@@ -32,7 +33,7 @@ if(isset($_SESSION["username"])) {
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script type="text/javascript">
         function submitResponse(questionId) {
-            $.post("QuizPage.php",
+            $.post("quiz-page.php",
             {answer: $('input[name=q' + questionId + 'Option]:checked').val()},
                 function(data){
                     document.write(data);

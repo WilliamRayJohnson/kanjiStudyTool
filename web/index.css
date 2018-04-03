@@ -5,7 +5,13 @@ body {
     background-color:  #eeeeee;
 }
 
-ul {
+.siteHeader {
+    text-align: center;
+    padding: 20px;
+}
+
+/* Menu Bar */
+ul.menu {
     list-style-type: none;
     margin: 0;
     margin-bottom: 20px;
@@ -14,21 +20,20 @@ ul {
     background-color: #333;
 }
 
-li {
+li.menu {
     float: left;
 }
 
-li a, .dropbtn {
-    display: inline-block;
+li.menu a, .dropbtn {
+    display: block;
     color: white;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
 }
 
-
-li a:hover:not(.active), .dropdown:hover:not(.active) .dropbtn {
-    background-color:  #930d0d;
+li.menu a:hover:not(.active), .dropdown:hover:not(.active) .dropbtn {
+    background-color: #ea430b;
 }
 
 li.dropdown {
@@ -39,7 +44,7 @@ li.dropdown {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 100px;
+    min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
@@ -52,19 +57,27 @@ li.dropdown {
     text-align: left;
 }
 
-.dropdown-content a:hover {background-color: #f1f1f1}
+.dropdown-content a:hover:not(.active) {
+    background-color: #f1f1f1
+}
 
 .dropdown:hover .dropdown-content {
     display: block;
 }
 
 .active {
-    background-color:  #ff0000;
+    background-color: red;
 }
 
+/* Content */
 .content {
     margin: auto;
     width: 70%;
+}
+
+.content-block {
+    background-color: white;
+    padding: 10px;
 }
 
 .content-button {
@@ -80,18 +93,15 @@ li.dropdown {
     background-color: white;
 }
 
+.content-header {
+    text-align: center;
+}
+
 .content-button:hover {
     background-color: #ff4200;
 }
 
-.question-block {
-    width: 60%;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: white;
-    padding: 20px;
-}
-
+/* Quiz */
 .quiz-question {
     margin-top: 0;
     margin-bottom: 10px;
@@ -104,6 +114,16 @@ li.dropdown {
     font-size: 1.6em;
 }
 
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: auto;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
 input[type=submit] {
     background-color: #ed580b;
     border: none;
@@ -112,21 +132,29 @@ input[type=submit] {
     text-decoration: none;
     margin: 10px 2px;
     cursor: pointer;
+    border: none;
+    border-radius: 4px;
     font-size: 1em;
 }
 
-table.kanji-stats {
+fieldset {
+  overflow: hidden
+}
+
+/* Profile */
+table.kanji-stats, table.profile-info {
     border-collapse: collapse;
     width: 100%;
     background-color: white;
 }
 
-th, td {
+table.profile-info th, table.profile-info td {
+    text-align: left;
+    padding: 8px;
+}
+
+table.kanji-stats th, table.kanji-stats td {
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-}
-
-.profile-header {
-    
 }

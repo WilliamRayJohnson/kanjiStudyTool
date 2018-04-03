@@ -17,7 +17,8 @@ $_SESSION["username"] = "William";
         <?php include '../src/MenuBar.php'?>
         
         <div class="content">
-            <a class="content-button" href="QuizPage.php">Take a Quiz</a>
+            <a class="content-button" href="quiz-setup.php">Take a Quiz</a>
+            <a class="content-button" href="add-source.php">Add Kanji Source</a>
         </div>
     </body>
 </html>
