@@ -359,5 +359,39 @@
 
             return $quizAnswers;
         }
+        
+        /**
+        * Retrieves the sources of kanji that are not being track for a particular
+        * user
+        * @param string $username The user in question
+        * @return string An array of the sources not being tracked
+        */
+        function getSourcesNotTracked($username) {
+            $sources = array();
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], 
+                    $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+            if (!$db)
+                die("Connection failed: " . mysqli_connect_error());
+            
+            $stmt = $db->prepare("SELECT ks.source
+                                    FROM kanji_source ks
+                                    WHERE ks.id NOT IN (SELECT k.source_id
+                                                        FROM student_kanji sk
+                                                        JOIN kanji k ON sk.kanji_id = k.id
+                                                        JOIN kanji_source kks ON k.source_id = kks.id
+                                                        JOIN student s ON sk.student_id = s.id
+                                                        WHERE s.name = ?)");
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+            $results = $stmt->get_result();
+            
+            if (mysqli_num_rows($results) > 0) {
+                while($row = mysqli_fetch_assoc($results))
+                    array_push($sources, $row["source"]);
+            }
+            
+            return $sources;
+        }
     }
 ?>
