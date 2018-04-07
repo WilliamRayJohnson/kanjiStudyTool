@@ -32,8 +32,6 @@
             $sourceID = readline();
             $accessor->addKanji($kanji, (int)$sourceID);
         }
-        $wordID = $accessor->getWordID($wordToAdd[0]);
-        $kanjiID = $accessor->getKanjiId($kanji);
-        $accessor->linkWordAndKanji($wordID, $kanjiID);
+        $accessor->linkWordAndKanji($wordToAdd[0], $kanji);
     }
 ?>
