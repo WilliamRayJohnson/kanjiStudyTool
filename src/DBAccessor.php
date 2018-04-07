@@ -16,60 +16,6 @@
         }
 
         /**
-        * Echos all of the kanji found in the DB
-        */
-        function displayAllKanji() {
-            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
-            mysqli_set_charset($db, "utf8");
-
-            if (!$db) {
-                die("Connection failed: " . mysqli_connect_error());
-            }
-
-            $sql = "SELECT * FROM kanji";
-            $result = mysqli_query($db, $sql);
-
-            if (mysqli_num_rows($result) > 0) {
-                while($row = mysqli_fetch_assoc($result)) {
-                    echo "<p>" . $row["kanji"] . "</p>";
-                }
-            }
-            else {
-                echo "0 results";
-            }
-
-            mysqli_close($db);
-        }
-
-        /**
-        * Retrives all words and readings that a kanji is contained within given a kanji_id.
-        * @param int $kanjiID The ID of the kanji
-        * @return string A 2-dimensional array of words containing the kanji and their associated hiragana reading
-        */
-        function getWordsWithKanji($kanjiID) {
-            $wordsAndReadings = array();
-            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
-            mysqli_set_charset($db, "utf8");
-
-            if (!$db) {
-                die("Connection failed: " . mysqli_connect_error());
-            }
-
-            $sql = "CALL get_words_containing_kanji(" . $kanjiID . ")";
-            $result = mysqli_query($db, $sql);
-
-            if (mysqli_num_rows($result) > 0) {
-                while($row = mysqli_fetch_assoc($result)) {
-                    $wordsAndReadings[] = array($row["word"], $row["reading"]);
-                }
-            }
-
-            mysqli_close($db);
-
-            return $wordsAndReadings;
-        }
-
-        /**
         * Adds a word and its reading to the DB.
         * @param string $word The word in kanji to add to the DB
         * @param string $reading The hiragana reading for the word
@@ -78,12 +24,13 @@
             $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
             mysqli_set_charset($db, "utf8");
 
-            if (!$db) {
+            if (!$db)
                 die("Connection failed: " . mysqli_connect_error());
-            }
 
-            $sql = "CALL add_word(\"" . $word . "\",\"" . $reading . "\")";
-            mysqli_query($db, $sql);
+            $stmt = $db->prepare("INSERT INTO `word` (`id`, `word`, `reading`)
+                                    VALUE (NULL, ?, ?)");
+            $stmt->bind_param("ss", $word, $reading);
+            $stmt->execute();
 
             mysqli_close($db);
         }
@@ -97,49 +44,36 @@
             $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
             mysqli_set_charset($db, "utf8");
 
-            if (!$db) {
+            if (!$db)
                 die("Connection failed: " . mysqli_connect_error());
-            }
 
-            $sql = "CALL add_kanji(\"" . $kanji . "\"," . $source_id . ")";
-            mysqli_query($db, $sql);
-
-            mysqli_close($db);
-        }
-
-        /**
-        * Adds a source to the DB.
-        * @param string $source_name the name of the source to add
-        */
-        function addSource($source_name) {
-            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
-            mysqli_set_charset($db, "utf8");
-
-            if (!$db) {
-                die("Connection failed: " . mysqli_connect_error());
-            }
-
-            $sql = "CALL add_source(\"" . $source_name . "\")";
-            mysqli_query($db, $sql);
+            $stmt = $db->prepare("INSERT INTO `kanji` (`id`, `kanji`, `source_id`)
+                                    VALUES (NULL, ?, ?)");
+            $stmt->bind_param("si", $kanji, $source_id);
+            $stmt->execute();
 
             mysqli_close($db);
         }
 
         /**
         * Associates a kanji and a word in the DB
-        * @param int $wordID the ID of the word
-        * @param int $kanjiID the ID of the kanji
+        * @param string $word the word to associate
+        * @param string $kanji the kanji to associate
         */
-        function linkWordAndKanji($wordID, $kanjiID) {
+        function linkWordAndKanji($word, $kanji) {
             $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
             mysqli_set_charset($db, "utf8");
 
-            if (!$db) {
+            if (!$db)
                 die("Connection failed: " . mysqli_connect_error());
-            }
 
-            $sql = "CALL link_kanji_and_word(" . $kanjiID . "," . $wordID . ")";
-            mysqli_query($db, $sql);
+            $stmt = $db->prepare("INSERT INTO `kanji_in_word` (`word_id`, `kanji_id`)
+                                    SELECT w.id, k.id
+                                        FROM kanji k
+                                        CROSS JOIN word w
+                                        WHERE k.kanji = ? AND w.word = ?");
+            $stmt->bind_param("ss", $kanji, $word);
+            $stmt->execute();
 
             mysqli_close($db);
         }
@@ -154,16 +88,18 @@
             $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
             mysqli_set_charset($db, "utf8");
 
-            if (!$db) {
+            if (!$db)
                 die("Connection failed: " . mysqli_connect_error());
-            }
 
-            $sql = "SELECT id FROM kanji WHERE kanji=\"" . $theKanji . "\"";
-            $result = mysqli_query($db, $sql);
+            $stmt = $db->prepare("SELECT id
+                                    FROM kanji
+                                    WHERE kanji = ?");
+            $stmt->bind_param("s", $theKanji);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-            if (mysqli_num_rows($result) > 0) {
+            if (mysqli_num_rows($result) > 0)
                 $kanjiExist = true;
-            }
 
             mysqli_close($db);
 
@@ -179,75 +115,19 @@
             $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
             mysqli_set_charset($db, "utf8");
 
-            if (!$db) {
+            if (!$db)
                 die("Connection failed: " . mysqli_connect_error());
-            }
 
             $sql = "SELECT * FROM kanji_source";
             $result = mysqli_query($db, $sql);
 
             if (mysqli_num_rows($result) > 0) {
-                while($row = mysqli_fetch_assoc($result)) {
+                while($row = mysqli_fetch_assoc($result))
                     $sourceInfo[] = array($row["id"], $row["source"]);
-                }
             }
 
             mysqli_close($db);
             return $sourceInfo;
-        }
-
-        /**
-        * Gets the id of a given kanji
-        * @param string $theKanji the kanji in question
-        * @return int The ID of the kanji passed
-        */
-        function getKanjiID($theKanji) {
-            $kanjiID;
-            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
-            mysqli_set_charset($db, "utf8");
-
-            if (!$db) {
-                die("Connection failed: " . mysqli_connect_error());
-            }
-
-            $sql = "SELECT id FROM kanji WHERE kanji=\"" . $theKanji . "\"";
-            $result = mysqli_query($db, $sql);
-
-            if (mysqli_num_rows($result) > 0) {
-                $row = mysqli_fetch_assoc($result);
-                $kanjiID = $row["id"];
-            }
-
-            mysqli_close($db);
-
-            return (int)$kanjiID;
-        }
-
-        /**
-        * Gets the id of a given word
-        * @param string $theWord the word in question
-        * @return int The ID of the word passed
-        */
-        function getWordID($theWord) {
-            $wordID;
-            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
-            mysqli_set_charset($db, "utf8");
-
-            if (!$db) {
-                die("Connection failed: " . mysqli_connect_error());
-            }
-
-            $sql = "SELECT id FROM word WHERE word=\"" . $theWord . "\"";
-            $result = mysqli_query($db, $sql);
-
-            if (mysqli_num_rows($result) > 0) {
-                $row = mysqli_fetch_assoc($result);
-                $wordID = $row["id"];
-            }
-
-            mysqli_close($db);
-
-            return (int)$wordID;
         }
 
         /**
@@ -264,8 +144,14 @@
             if (!$db)
                 die("Connection failed: " . mysqli_connect_error());
 
-            $sql = sprintf("CALL GET_KANJI_STATS(\"%s\", \"%s\")", $kanji, $user);
-            $result = mysqli_query($db, $sql);
+            $stmt = $db->prepare("SELECT sk.retention_score, sk.total_questions_asked
+                                    FROM student_kanji sk
+                                    JOIN student s ON s.id = sk.student_id
+                                    JOIN kanji k ON k.id = sk.kanji_id
+                                    WHERE k.kanji = ? AND s.username = ?");
+            $stmt->bind_param("ss", $kanji, $user);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
             if (mysqli_num_rows($result) > 0) {
                 $row = mysqli_fetch_assoc($result);
@@ -290,9 +176,14 @@
             if (!$db)
                 die("Connection failed: " . mysqli_connect_error());
 
-            $sql = sprintf("CALL UPDATE_KANJI_STATS(\"%s\", \"%s\", %f)",
-                        $kanji, $user, $newRetentionScore);
-            mysqli_query($db, $sql);
+            $stmt = $db->prepare("UPDATE student_kanji
+                                    SET retention_score = ?,
+                                        total_questions_asked = total_questions_asked + 1,
+                                        last_time_quized = NOW()
+                                    WHERE student_id = (SELECT id FROM student WHERE username = ?)
+                                        AND kanji_id = (SELECT id FROM kanji WHERE kanji = ?)");
+            $stmt->bind_param("dss", $newRetentionScore, $user, $kanji);
+            $stmt->execute();
             mysqli_close($db);
         }
 
@@ -313,8 +204,23 @@
             if (!$db)
                 die("Connection failed: " . mysqli_connect_error());
 
-            $sql = sprintf("CALL GET_QUIZ_QUESTIONS(\"%s\", %d)", $username, $quizLength);
-            $results = mysqli_query($db, $sql);
+            $stmt = $db->prepare("SELECT qKanji, qWord, qReading
+                                    FROM
+                                    (SELECT k.kanji AS qKanji, w.word AS qWord,
+                                            w.reading AS qReading, sk.retention_score AS qRetention
+                                        FROM student s
+                                        JOIN student_kanji sk ON s.id = sk.student_id
+                                        JOIN kanji k ON sk.kanji_id = k.id
+                                        JOIN kanji_in_word kiw ON kiw.kanji_id = k.id
+                                        JOIN word w ON kiw.word_id = w.id
+                                        WHERE s.username = ?
+                                        ORDER BY RAND()) AS q
+                                    GROUP BY qKanji
+                                    ORDER BY qRetention
+                                    LIMIT ?");
+            $stmt->bind_param("si", $username, $quizLength);
+            $stmt->execute();
+            $results = $stmt->get_result();
 
             if (mysqli_num_rows($results) > 0) {
                 while($row = mysqli_fetch_assoc($results))
@@ -345,9 +251,22 @@
             if (!$db)
                 die("Connection failed: " . mysqli_connect_error());
 
-            $sql = sprintf("CALL GET_QUIZ_ANSWERS(\"%s\", \"%s\", %d)",
-                        $kanji, $word, $answerCount);
-            $results = mysqli_query($db, $sql);
+            $stmt = $db->prepare("SELECT w.word, w.reading
+                                    FROM word w
+                                    JOIN kanji_in_word kiw ON kiw.word_id = w.id
+                                    JOIN kanji k ON k.id = kiw.kanji_id
+                                    WHERE k.kanji = ? AND NOT w.word = ?
+                                UNION
+                                SELECT w.word, w.reading
+                                    FROM word w
+                                    JOIN kanji_in_word kiw ON kiw.word_id = w.id
+                                    JOIN kanji k ON k.id = kiw.kanji_id
+                                    WHERE k.source_id = (SELECT source_id FROM kanji WHERE kanji=?) AND NOT w.word = ?
+                                ORDER BY RAND()
+                                LIMIT ?");
+            $stmt->bind_param("ssssi", $kanji, $word, $kanji, $word, $answerCount);
+            $stmt->execute();
+            $results = $stmt->get_result();
 
             if (mysqli_num_rows($results) > 0) {
                 while($row = mysqli_fetch_assoc($results)) {
@@ -381,7 +300,7 @@
                                                         JOIN kanji k ON sk.kanji_id = k.id
                                                         JOIN kanji_source kks ON k.source_id = kks.id
                                                         JOIN student s ON sk.student_id = s.id
-                                                        WHERE s.name = ?)");
+                                                        WHERE s.username = ?)");
             $stmt->bind_param("s", $username);
             $stmt->execute();
             $results = $stmt->get_result();

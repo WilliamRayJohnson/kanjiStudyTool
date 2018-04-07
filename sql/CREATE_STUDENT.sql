@@ -1,2 +1,2 @@
-INSERT INTO `student` (`id`, `name`, `creation_date`, `last_login`)
-    VALUE (NULL, "William", NOW(), NOW());
+INSERT INTO `student` (`id`, `username`, `creation_date`, `last_login`)
+    VALUE (NULL, "wrj6844", NOW(), NOW());
