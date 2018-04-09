@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <?php
-if(isset($_SESSION["username"]))
-    ;
-else
-    $_SESSION["username"] = "William";
+if(!isset($_SESSION["username"]))
+    header("Location: index.php");
 ?>
 
 <html>

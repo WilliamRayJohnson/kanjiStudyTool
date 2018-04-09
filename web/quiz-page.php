@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 include '../src/Question.php';
 include '../src/Quizer.php';
@@ -7,7 +6,10 @@ include '../src/DBAccessor.php';
 
 session_start();
 
-if(isset($_SESSION["username"])) {
+if(!isset($_SESSION["username"])) {
+    header('Location: index.php');
+}
+else {
     if(isset($_SESSION["isQuizing"])) {
         if(isset($_POST["answer"])) {
             $_SESSION["quiz"]->answerCurrentQuestion($_POST["answer"]);
@@ -23,6 +25,7 @@ if(isset($_SESSION["username"])) {
     }
 }
 ?>
+<!DOCTYPE html>
 
 <html>
     <head>

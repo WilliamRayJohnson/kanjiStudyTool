@@ -1,9 +1,15 @@
 <?php
 session_start();
-if(isset($_SESSION["username"]))
+if(isset($_SESSION["username"])) {
     $username = $_SESSION["username"];
-else
+    $userHref = "#";
+    $dropdownStatus = "";
+}
+else {
     $username = "Login";
+    $userHref = "login.php";
+    $dropdownStatus = "none";
+}
 
 print <<<MENU
 <h1 class="siteHeader">The Kanji Studier</h1>
@@ -11,9 +17,8 @@ print <<<MENU
 <ul class="menu">
     <li class="menu"><a href="index.php">Home</a></li>
     <li class="dropdown" style="float:right">
-        <a href="#" class="dropbtn">$username</a>
-        <div class="dropdown-content">
-            <a href="#">Profile</a>
+        <a href="$userHref" class="dropbtn">$username</a>
+        <div class="dropdown-content" style="display:$dropdownStatus">
             <a href="#">Logout</a>
         </div>
     </li>

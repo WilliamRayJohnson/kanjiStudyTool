@@ -1,8 +1,7 @@
-<!DOCTYPE html>
 <?php
 session_start();
-$_SESSION["username"] = "William";
 ?>
+<!DOCTYPE html>
 
 <html>
     <head>
