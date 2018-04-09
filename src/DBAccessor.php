@@ -309,6 +309,7 @@
                 while($row = mysqli_fetch_assoc($results))
                     array_push($sources, $row["source"]);
             }
+            mysqli_close($db);
 
             return $sources;
         }
@@ -338,8 +339,55 @@
                 while($row = mysqli_fetch_assoc($results))
                     array_push($kanji, $row["kanji"]);
             }
+            mysqli_close($db);
 
             return $kanji;
+        }
+
+        /**
+         * Determines if user has an account in the database
+         * @param String $username the given username
+         * @return boolean True if user has an acccount in the DB
+         */
+        function hasAccount($username) {
+            $hasAccount = false;
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'],
+                $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+            if (!$db)
+                die("Connection failed: " . mysqli_connect_error());
+
+            $stmt = $db->prepare("SELECT s.username
+                                    FROM student s
+                                    WHERE s.username = ?");
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+            $results = $stmt->get_result();
+
+            if (mysqli_num_rows($results) > 0)
+                $hasAccount = true;
+            mysqli_close($db);
+
+            return $hasAccount;
+        }
+
+        /**
+         * Creates a new user with the given username
+         * @param String $username the new user
+         */
+        function createUser($username) {
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'],
+                $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+            if (!$db)
+                die("Connection failed: " . mysqli_connect_error());
+
+            $stmt = $db->prepare("INSERT INTO `student` (`id`, `username`, `creation_date`, `last_login`)
+                                    VALUE (NULL, ?, NOW(), NOW())");
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+
+            mysqli_close($db);
         }
     }
 ?>
