@@ -23,7 +23,7 @@ if(!isset($_SESSION["username"]))
                     $dbInfo = require_once('../config/config.php');
                     $accessor = new DBAccessor($dbInfo);
                     while($score = current($_POST)) {
-                        $accessor->startTrackingKanjiForStudent($_SESSION["username"], key($_POST), $score);
+                        $accessor->startTrackingKanjiForStudent($_SESSION["username"], key($_POST), floatval($score));
                         next($_POST);
                     }
                     echo "Source successfully added to your study set!";
