@@ -21,6 +21,7 @@ if(!isset($_SESSION["username"]))
             <div class="content-block">
                 <?php
                     $dbInfo = require_once('../config/config.php');
+                    include '../src/DBAccessor.php';
                     $accessor = new DBAccessor($dbInfo);
                     while($score = current($_POST)) {
                         $accessor->startTrackingKanjiForStudent($_SESSION["username"], key($_POST), floatval($score));
