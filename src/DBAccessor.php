@@ -389,5 +389,29 @@
 
             mysqli_close($db);
         }
+
+        /**
+        * Inserts kanji data for a particular user with the score they self rated with
+        * @param String $username the user the kanji data is for
+        * @param String $kanji the kanji to start tracking
+        * @param float $initialScore the initial self rated score for the kanji
+        */
+        function startTrackingKanjiForStudent($username, $kanji, $initialScore) {
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'],
+                $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+            if (!$db)
+                die("Connection failed: " . mysqli_connect_error());
+
+            $stmt = $db->prepare("INSERT INTO `student_kanji` (`student_id`, `kanji_id`, `retention_score`, `total_questions_asked`, `last_time_quized`)
+                                    SELECT s.id, k.id, ?, 0, NOW()
+                                        FROM student s
+                                        CROSS JOIN kanji k
+                                        WHERE s.username = ? AND k.kanji = ?");
+            $stmt->bind_param("dss", $initialScore, $username, $kanji);
+            $stmt->execute();
+
+            mysqli_close($db);
+        }
     }
 ?>
