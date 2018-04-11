@@ -11,5 +11,11 @@ phpCAS::forceAuthentication();
 session_start();
 $_SESSION["username"] = phpCAS::getUser();
 
+include '../src/DBAccessor.php';
+$accessor = new DBAccessor($dbInfo);
+if(!$accessor->hasAccount($_SESSION["username"]))
+    $accessor->createUser($_SESSION["username"]);
+else
+    $accessor->logUserLogin($_SESSION["username"]);
 header('Location: index.php');
 ?>

@@ -21,7 +21,8 @@
         * @param string $reading The hiragana reading for the word
         */
         function addWord($word, $reading) {
-            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'],
+                $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
             mysqli_set_charset($db, "utf8");
 
             if (!$db)
@@ -41,7 +42,8 @@
         * @param int $source_id the id of the source the kanji comes from
         */
         function addKanji($kanji, $source_id) {
-            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'],
+                $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
             mysqli_set_charset($db, "utf8");
 
             if (!$db)
@@ -61,7 +63,8 @@
         * @param string $kanji the kanji to associate
         */
         function linkWordAndKanji($word, $kanji) {
-            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'],
+                $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
             mysqli_set_charset($db, "utf8");
 
             if (!$db)
@@ -85,7 +88,8 @@
         */
         function hasKanji($theKanji) {
             $kanjiExist = false;
-            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'],
+                $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
             mysqli_set_charset($db, "utf8");
 
             if (!$db)
@@ -112,7 +116,8 @@
         */
         function getSourceInfo() {
             $sourceInfo = array();
-            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'],
+                $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
             mysqli_set_charset($db, "utf8");
 
             if (!$db)
@@ -138,7 +143,8 @@
         */
         function getKanjiStats($kanji, $user) {
             $stats = array();
-            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'],
+                $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
             mysqli_set_charset($db, "utf8");
 
             if (!$db)
@@ -170,7 +176,8 @@
         * @param float $newRetentionScore The newly generated retention score for the kanji of that user
         */
         function updateKanjiStats($kanji, $user, $newRetentionScore) {
-            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'],
+                $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
             mysqli_set_charset($db, "utf8");
 
             if (!$db)
@@ -198,7 +205,8 @@
         */
         function getQuizQuestions($username, $quizLength) {
             $quizQuestions = array();
-            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'],
+                $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
             mysqli_set_charset($db, "utf8");
 
             if (!$db)
@@ -218,7 +226,7 @@
                                     GROUP BY qKanji
                                     ORDER BY qRetention
                                     LIMIT ?");
-            $stmt->bind_param("si", $username, $quizLength);
+            $stmt->bind_param("si", $username, $username, $quizLength);
             $stmt->execute();
             $results = $stmt->get_result();
 
@@ -245,7 +253,8 @@
         */
         function getQuizAnswers($kanji, $word, $answerCount) {
             $quizAnswers = array("words" => array(), "readings" => array());
-            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'], $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'],
+                $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
             mysqli_set_charset($db, "utf8");
 
             if (!$db)
@@ -403,12 +412,33 @@
             if (!$db)
                 die("Connection failed: " . mysqli_connect_error());
 
-            $stmt = $db->prepare("INSERT INTO `student_kanji` (`student_id`, `kanji_id`, `retention_score`, `total_questions_asked`, `last_time_quized`)
-                                    SELECT s.id, k.id, ?, 0, NOW()
+            $stmt = $db->prepare("INSERT INTO `student_kanji` (`student_id`, `kanji_id`,
+                                    `retention_score`, `total_questions_asked`, `last_time_quized`)
+                                    SELECT s.id, k.id, ?, 1, NOW()
                                         FROM student s
                                         CROSS JOIN kanji k
                                         WHERE s.username = ? AND k.kanji = ?");
             $stmt->bind_param("dss", $initialScore, $username, $kanji);
+            $stmt->execute();
+
+            mysqli_close($db);
+        }
+
+        /**
+        * Updates the last_login time for a particular user
+        * @param String $username the user in question
+        */
+        function logUserLogin($username) {
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'],
+                $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+            if (!$db)
+                die("Connection failed: " . mysqli_connect_error());
+
+            $stmt = $db->prepare("UPDATE student
+                                    SET last_login = NOW()
+                                    WHERE username = ?");
+            $stmt->bind_param("s", $username);
             $stmt->execute();
 
             mysqli_close($db);

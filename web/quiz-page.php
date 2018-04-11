@@ -62,7 +62,7 @@ else {
                 $currentQuestion = $_SESSION['quiz']->getCurrentQuestion();
                 $formattedQuestion = $currentQuestion->getFormattedQuestion();
                 print <<<QDIV
-                <div class=question-block>
+                <div class="content-block">
                 $formattedQuestion
                 </div>
 QDIV;
