@@ -221,12 +221,22 @@
                                         JOIN kanji k ON sk.kanji_id = k.id
                                         JOIN kanji_in_word kiw ON kiw.kanji_id = k.id
                                         JOIN word w ON kiw.word_id = w.id
-                                        WHERE s.username = ?
+                                        WHERE s.username = ? AND w.word NOT IN
+                                            (SELECT w.word
+                                                FROM word w
+                                                JOIN kanji_in_word kiw ON w.id = kiw.word_id
+                                                JOIN kanji k ON kiw.kanji_id = k.id
+                                                WHERE k.kanji NOT IN
+                                                    (SELECT k.kanji
+                                                        FROM student s
+                                                        JOIN student_kanji sk ON s.id = sk.student_id
+                                                        JOIN kanji k ON sk.kanji_id = k.id
+                                                        WHERE s.username = ?))
                                         ORDER BY RAND()) AS q
                                     GROUP BY qKanji
                                     ORDER BY qRetention
                                     LIMIT ?");
-            $stmt->bind_param("si", $username, $username, $quizLength);
+            $stmt->bind_param("ssi", $username, $username, $quizLength);
             $stmt->execute();
             $results = $stmt->get_result();
 
@@ -260,18 +270,18 @@
             if (!$db)
                 die("Connection failed: " . mysqli_connect_error());
 
-            $stmt = $db->prepare("SELECT w.word, w.reading
+            $stmt = $db->prepare("SELECT w.word, w.reading, FLOOR(100 + RAND()*100) AS weight
                                     FROM word w
                                     JOIN kanji_in_word kiw ON kiw.word_id = w.id
                                     JOIN kanji k ON k.id = kiw.kanji_id
                                     WHERE k.kanji = ? AND NOT w.word = ?
                                 UNION
-                                SELECT w.word, w.reading
+                                SELECT w.word, w.reading, FLOOR(200 + RAND()*100) AS weight
                                     FROM word w
                                     JOIN kanji_in_word kiw ON kiw.word_id = w.id
                                     JOIN kanji k ON k.id = kiw.kanji_id
                                     WHERE k.source_id = (SELECT source_id FROM kanji WHERE kanji=?) AND NOT w.word = ?
-                                ORDER BY RAND()
+                                ORDER BY weight
                                 LIMIT ?");
             $stmt->bind_param("ssssi", $kanji, $word, $kanji, $word, $answerCount);
             $stmt->execute();
