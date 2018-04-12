@@ -474,7 +474,7 @@
                                     WHERE username = ?");
             $stmt->bind_param("s", $username);
             $stmt->execute();
-            $results = $stmt->getResult();
+            $results = $stmt->get_result();
 
             if (mysqli_num_rows($results) > 0)
                 $hasTrackedKanji = true;
