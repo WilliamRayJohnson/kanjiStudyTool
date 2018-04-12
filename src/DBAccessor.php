@@ -453,5 +453,34 @@
 
             mysqli_close($db);
         }
+
+        /**
+         * Determines if the user has added kanji to be tracked
+         * @param String $username the user in question
+         * @return bool true if there are kanji tracked
+         */
+        function hasTrackedKanji($username) {
+            $hasTrackedKanji = false;
+            $db = mysqli_connect($this->dbInfo['DB_SERVER'], $this->dbInfo['DB_USERNAME'],
+                $this->dbInfo['DB_PASSWORD'], $this->dbInfo['DB_DATABASE']);
+            mysqli_set_charset($db, "utf8");
+            if (!$db)
+                die("Connection failed: " . mysqli_connect_error());
+
+            $stmt = $db->prepare("SELECT k.kanji
+                                    FROM student_kanji sk
+                                    JOIN kanji k ON sk.kanji_id = k.id
+                                    JOIN student s ON sk.student_id = s.id
+                                    WHERE username = ?");
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+            $results = $stmt->getResult();
+
+            if (mysqli_num_rows($results) > 0)
+                $hasTrackedKanji = true;
+            mysqli_close($db);
+
+            return $hasTrackedKanji;
+        }
     }
 ?>
