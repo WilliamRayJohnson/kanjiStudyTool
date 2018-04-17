@@ -10,7 +10,7 @@ if(isset($_SESSION["sourceToAdd"])){
         print <<<INPUT
         <h3>$kanji</h3>
         <fieldset>
-        <input type="radio" name="$kanji" id="poor" value="0.1">
+        <input type="radio" name="$kanji" id="poor" value="0.1" required>
             <label for="poor">Poor</label>
         <input type="radio" name="$kanji" id="fine" value="0.3">
             <label for="fine">Fine</label>
