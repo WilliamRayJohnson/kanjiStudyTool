@@ -3,5 +3,4 @@ SELECT s.username, k.kanji, sk.retention_score, sk.total_questions_asked,
     FROM student_kanji sk
     JOIN kanji k ON k.id = sk.kanji_id
     JOIN student s ON sk.student_id=s.id
-    WHERE s.username = "William"
-    ORDER BY sk.retention_score;
+    ORDER BY s.username;
