@@ -47,3 +47,8 @@ CREATE TABLE student_kanji (
     retention_score FLOAT,
     total_questions_asked INT,
     last_time_quized DATETIME);
+
+CREATE TABLE weights (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    literacy_weight FLOAT NOT NULL,
+    total_q_weight FLOAT NOT NULL);
