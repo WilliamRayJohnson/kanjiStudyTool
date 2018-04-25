@@ -1,6 +1,6 @@
 <?php
     use PHPUnit\Framework\TestCase;
-    
+
     /**
      * @covers Question
      */
@@ -18,7 +18,7 @@
             $actualQuestion = $testQuestion->getFormattedQuestion();
             $this->assertEquals($expectedQuestion, $actualQuestion);
         }
-        
+
         public function testAnswerQuestion() : void {
             $testQuestion = new Question(1, "test", array("test"), "test", "test");
             $testQuestion->answerQuestion("answer");
@@ -26,7 +26,7 @@
             $this->assertFalse($testQuestion->hasCorrectAnswer());
             $this->assertEquals(1, $testQuestion->responseAttempts());
         }
-        
+
         public function testAnswerQuestionCorrectly() : void {
             $testQuestion = new Question(1, "test", array("test"), "test", "test");
             $testQuestion->answerQuestion("test");
@@ -40,6 +40,22 @@
             $this->assertTrue($testQuestion->needsRepeatResponse());
         }
 
+        public function testAnswerQuestionIncorrectlyHTML() : void {
+            $testQuestion = new Question(1, "test", array("test"), "test", "test");
+            $testQuestion->answerQuestion("incorrect");
+            $expectedQuestion =
+            "<h2 class=quiz-question>test</h2>\n" .
+            "<div class=quiz-answers>\n" .
+            "    <form name=\"question\" onSubmit=\"return submitResponse(1)\">\n" .
+            "        <input type=\"radio\" name=\"q1Option\" value=\"test\">test<br>\n" .
+            "        <input type=\"submit\" name=\"q1submit\" value=\"Submit\">\n" .
+            "    </form>\n" .
+            "<p style=\"color:red\">Sorry that response was incorrect, please try again</p>" .
+            "</div>\n";
+            $actualQuestion = $testQuestion->getFormattedQuestion();
+            $this->assertEquals($expectedQuestion, $actualQuestion);
+        }
+
         public function testAnsQIncorrectThenCorrect() : void {
             $testQuestion = new Question(1, "test", array("test"), "test", "test");
             $testQuestion->answerQuestion("incorrect");
@@ -49,7 +65,7 @@
             $this->assertTrue($testQuestion->hasCorrectAnswer());
             $this->assertEquals(2, $testQuestion->responseAttempts());
         }
-        
+
         public function testAnsQAfterQuestionIsComplete() {
             $testQuestion = new Question(1, "test", array("test"), "test", "test");
             $testQuestion->answerQuestion("test");
@@ -59,7 +75,7 @@
             $this->assertTrue($testQuestion->hasCorrectAnswer());
             $this->assertEquals(1, $testQuestion->responseAttempts());
         }
-        
+
         public function testAnsQAfterQuestionIsCompleteWIncorrectAns() {
             $testQuestion = new Question(1, "test", array("test"), "test", "test");
             $testQuestion->answerQuestion("incorrect");
@@ -71,7 +87,7 @@
             $this->assertFalse($testQuestion->needsRepeatResponse());
             $this->assertEquals(3, $testQuestion->responseAttempts());
         }
-        
+
         public function testCompleteAnsQIncorrWorkflow() {
             $testQuestion = new Question(1, "test", array("test"), "test", "test");
             $testQuestion->answerQuestion("incorrect");
@@ -81,7 +97,24 @@
             $testQuestion->answerQuestion("test");
             $this->assertFalse($testQuestion->needsRepeatResponse());
         }
-        
+
+        public function testCompleteAnsQIncorrWorkflowHTML() {
+            $testQuestion = new Question(1, "test", array("test"), "test", "test");
+            $expectedQuestion =
+            "<h2 class=quiz-question>test</h2>\n" .
+            "<div class=quiz-answers>\n" .
+            "    <form name=\"question\" onSubmit=\"return submitResponse(1)\">\n" .
+            "        <input type=\"radio\" name=\"q1Option\" value=\"test\">test<br>\n" .
+            "        <input type=\"submit\" name=\"q1submit\" value=\"Submit\">\n" .
+            "    </form>\n" .
+            "</div>\n";
+            $testQuestion->answerQuestion("incorrect");
+            $testQuestion->answerQuestion("test");
+            $this->assertEquals($expectedQuestion, $testQuestion->getFormattedQuestion());
+            $testQuestion->answerQuestion("test");
+            $this->assertFalse($testQuestion->needsRepeatResponse());
+        }
+
         public function testConstructQuestion() : void {
             $testQuestion = new Question(1, "test", array("一", "二"), "一", "一");
             $this->assertEquals(1, $testQuestion->questionId);
@@ -92,12 +125,12 @@
             $this->assertFalse($testQuestion->isAnswered);
             $this->assertFalse($testQuestion->isAnsweredCorrectly);
         }
-        
+
         public function testGetJSON() {
             $testQuestion = new Question(1, "test", array("一", "二"), "一", "一");
             $expectedJSON = "{\"kanji\": \"一\", \"correct\": 0, \"incorrect\": 0}";
             $actualJSON = $testQuestion->getJSON();
             $this->assertEquals($expectedJSON, $actualJSON);
         }
-    }  
+    }
 ?>

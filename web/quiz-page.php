@@ -75,7 +75,7 @@ QDIV;
                 <script type="text/javascript">
                 window.onload = sendQuizResults($quizResults);
                 </script>
-                <h2 style="margin: auto">Quiz is finished </h2>
+                <h2 class="content-header">Quiz is finished</h2>
                 <a class="content-button" href=index.php>Return to home</a>
 SEND_RESULTS;
 

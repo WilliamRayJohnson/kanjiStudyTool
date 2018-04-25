@@ -54,7 +54,12 @@
             }
             $formattedQuestion .= 
             "        <input type=\"submit\" name=\"q" . $this->questionId . "submit\" value=\"Submit\">\n" .
-            "    </form>\n" .
+            "    </form>\n";
+            if ($this->repeatResponseNeeded && !$this->isAnsweredCorrectly) {
+                $formattedQuestion .=
+                "<p style=\"color:red\">Sorry that response was incorrect, please try again</p>";
+            }
+            $formattedQuestion .=
             "</div>\n";
             
             return($formattedQuestion);
