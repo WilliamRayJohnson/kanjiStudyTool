@@ -10,10 +10,11 @@ class QuizResultsProcessor {
     const PAST_MAX_CHANGE = 0.02;
     
     /**
-    * Calculates a basic retention score based on the ratio between
-    * past correct/incorrect responses and the correct/incorrect responses given
-    * in the quiz. Ratios favoring correct responses raise retention score while
-    * ratios favoring incorrect responses lower retention score.
+    * Calculates a basic retention score based on the current retention score,
+    * the number of incorrect and correct responses for the most recent question asked,
+    * the total number of times the question has been asked in the past. The value
+    * calculated is essentially a recalculation of an average without knowing all of the values
+    * that contributed to the average.
     * @param int $totalQuestionsAsked The total number of questions asked for this
     *       kanji that is recorded in the database
     * @param int $quizCR The number of correct responses given by the user in the
@@ -26,7 +27,8 @@ class QuizResultsProcessor {
     */
     public static function calcBasicRetentionScore(
                     $totalQuestionsAsked, $quizCR, $quizIR, $currentRetentionScore) {
-        $newRetentionScore = ($currentRetentionScore + ($quizCR/($quizCR + quizIR)))/($totalQuestionsAsked + 1);
+        $estimatedTotalScore = $currentRetentionScore * $totalQuestionsAsked;
+        $newRetentionScore = ($estimatedTotalScore + ($quizCR/($quizCR + quizIR)))/($totalQuestionsAsked + 1);
         
         return $newRetentionScore;
     }
