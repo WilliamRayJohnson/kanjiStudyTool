@@ -38,6 +38,7 @@ CREATE TABLE student_kanji (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     student_id INT,
     kanji_id INT,
+    UNIQUE KEY (student_id, kanji_id),
     FOREIGN KEY (student_id)
         REFERENCES student(id)
         ON UPDATE CASCADE ON DELETE CASCADE,
@@ -52,3 +53,17 @@ CREATE TABLE weights (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     literacy_weight FLOAT NOT NULL,
     total_q_weight FLOAT NOT NULL);
+
+CREATE TABLE strong_distractor (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    question_word_id INT NOT NULL,
+    distractor_word_id INT NOT NULL,
+    FOREIGN KEY (question_word_id)
+        REFERENCES word(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    FOREIGN KEY (distractor_word_id)
+        REFERENCES word(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    UNIQUE KEY (question_word_id, distractor_word_id));
